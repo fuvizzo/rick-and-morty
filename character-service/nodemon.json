@@ -1,0 +1,12 @@
+{
+  "restartable": "rs",
+  "ignore": [
+    "node_modules"
+  ],
+  "verbose": true,
+  "watch": [
+    "build"
+  ],  
+  "ext": "js,json,ts" 
+}
+ 

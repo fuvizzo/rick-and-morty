@@ -43,7 +43,10 @@ const configuration: Configuration = {
     }),
     new MiniCssExtractPlugin(),
     new CleanWebpackPlugin(),
-    new EnvironmentPlugin(['NODE_ENV', 'REACT_APP_AUTH_SERVICE_URL']),
+    new EnvironmentPlugin([
+      'NODE_ENV',
+      'REACT_APP_AUTH_SERVICE_URL',
+    ]),
   ],
   output: {
     filename: 'bundle.js',

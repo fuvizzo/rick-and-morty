@@ -1,21 +1,31 @@
 import path from 'path';
 import { Configuration as WebpackConfiguration } from 'webpack';
-import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
+import { Configuration as WebpackDevServerConfiguration, ProxyConfigArray } from 'webpack-dev-server';
 import { merge } from 'webpack-merge';
 import common from './webpack.common';
 
 interface Configuration extends WebpackConfiguration {
-  devServer?: WebpackDevServerConfiguration;
+  devServer?: WebpackDevServerConfiguration
 }
 
 export default merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
+
   devServer: {
-    port: 5000,
+    port: Number(process.env.LISTENING_PORT),
     historyApiFallback: true,
     contentBase: path.join(__dirname, 'build'),
     open: true,
     openPage: '',
+    proxy: {
+      '/auth-service-api': {
+        target: process.env.REACT_APP_AUTH_SERVICE_URL,
+        pathRewrite: { '^/auth-service-api': '' },
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+
   },
 }) as Configuration;

@@ -1,8 +1,16 @@
-/* eslint-disable import/prefer-default-export */
-import { IUserData, AuthActionTypes } from './types';
+import { IUserData, AuthActionTypes, IAuth } from './types';
 import * as AuthActions from './constants';
 
-export const signIn = (userData: IUserData): AuthActionTypes => ({
+const signIn = (authData: IAuth): AuthActionTypes => ({
   type: AuthActions.SIGN_IN,
-  payload: userData,
+  payload: authData,
 });
+
+const signOut = (): AuthActionTypes => ({
+  type: AuthActions.SIGN_OUT,
+});
+
+export {
+  signIn,
+  signOut,
+};

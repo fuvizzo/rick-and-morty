@@ -3,7 +3,7 @@ import { connect, ConnectedProps } from 'react-redux';
 
 import CharacterList from '../character-list';
 
-import * as currentUserActions from '../../store/auth/thunk';
+import * as authActions from '../../store/auth/thunk';
 import { RootState } from '../../store';
 
 const connector = connect(
@@ -11,17 +11,26 @@ const connector = connect(
     loading: state.ui.loading,
     auth: state.auth,
   }),
-  currentUserActions,
+  authActions,
 );
 
 type PropsFromRedux = ConnectedProps<typeof connector>
 
 const Dashboard: React.FC<PropsFromRedux> = (props) => {
-  const { loading, auth } = props;
+  const { loading, auth, signOut } = props;
+  const signOutHandler = () => {
+    signOut();
+  };
 
   return (
     <div>
       {auth.userData && (`Welcome ${auth.userData.name}`)}
+      <button
+        data-testid="more-btn"
+        onClick={signOutHandler}
+      >
+        Sign Out
+      </button>
       <CharacterList />
     </div>
   );

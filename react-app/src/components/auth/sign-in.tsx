@@ -23,7 +23,7 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
     },
   } = props;
 
-  const loginHandler = (userName: string, password:string) => {
+  const signInHandler = (userName: string, password:string) => {
     signInWithEmailAndPassword(userName, password);
   };
 
@@ -31,9 +31,9 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
     { isAuthenticated && <Redirect to="/dashboard" />}
     <button
         data-testid="more-btn"
-        onClick={() => loginHandler('username', 'password')}
+        onClick={() => signInHandler('username', 'password')}
       >
-    Login
+    Sign In
       </button>
   </>;
 };

@@ -17,8 +17,16 @@ const AuthReducer: Reducer<IAuth, AuthActionTypes> = produce(
   ): void => {
     switch (action.type) {
       case AuthActions.SIGN_IN:
-        draft.userData = action.payload;
+        draft.userData = action.payload.userData;
+        draft.accessToken = action.payload.accessToken;
+        draft.refreshToken = action.payload.refreshToken;
         draft.isAuthenticated = true;
+        break;
+      case AuthActions.SIGN_OUT:
+        delete draft.userData;
+        delete draft.accessToken;
+        delete draft.refreshToken;
+        draft.isAuthenticated = false;
         break;
     }
   }, initialState,

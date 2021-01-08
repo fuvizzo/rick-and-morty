@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig",
+  "compilerOptions": {
+    "sourceMap": false,
+    "watch": false,
+    "typeRoots": [
+      "./@types",       
+    ] 
+  },
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "**/__mocks__/",
+    "**/in-memory/",
+    "**/*.test.ts"
+  ],
+}

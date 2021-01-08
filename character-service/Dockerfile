@@ -1,6 +1,6 @@
 FROM node:12.18-alpine as base
 RUN npm i npm@latest typescript -g
-RUN mkdir -p /usr/src/node_app 
+RUN mkdir -p /usr/src/node_app
 WORKDIR /usr/src/node_app 
 
 FROM base as prod
@@ -12,7 +12,7 @@ RUN npm install --production --silent
 
 ENV PATH /usr/src/node_app/node_modules/.bin:$PATH 
 
-WORKDIR /usr/src/node_app/auth-service   
+WORKDIR /usr/src/node_app/user-service   
 
 COPY . . 
 
@@ -34,7 +34,7 @@ RUN npm install
 ENV PATH /usr/src/node_app/node_modules/.bin:$PATH
 
 # copy in our source code last, as it changes the most
-WORKDIR /usr/src/node_app/auth-service
+WORKDIR /usr/src/node_app/user-service
 COPY . . 
  
 CMD ["npm", "start"]
