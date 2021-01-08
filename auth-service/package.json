@@ -1,0 +1,38 @@
+{
+  "name": "express-server",
+  "version": "1.0.0",
+  "description": "auth-service",
+  "main": "build/index.js",
+  "scripts": {
+    "tsc": "tsc --p tsconfig.prod.json",
+    "tsc:dev": "tsc",
+    "build:dev": "npm run tsc:dev",
+    "build": "npm run tsc",
+    "start": "nodemon --inspect=0.0.0.0:9228",
+    "start:dev": "DEBUG=web-server nodemon",
+    "test": "jest --detectOpenHandles --coverage",
+    "test:int": "jest src/express --coverage"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/debug": "^4.1.5",
+    "@types/express": "^4.17.9",
+    "@types/express-serve-static-core": "^4.17.17",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/mongoose": "^5.10.3",
+    "awilix": "^4.3.1",
+    "bcrypt": "^5.0.0",
+    "body-parser": "^1.19.0",
+    "debug": "^4.2.0",
+    "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
+    "express-healthcheck": "^0.1.0",
+    "joi": "^17.3.0",
+    "joi-objectid": "^3.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "mongoose": "^5.11.9"
+  }
+}

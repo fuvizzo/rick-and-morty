@@ -1,0 +1,13 @@
+/.history
+.vscode
+.env*
+/.docker/mongodb/data/
+/**/node_modules/
+/**/coverage/
+
+/**/build/
+
+.eslintcache 
+/**/.history
+/**/cypress/integration/examples
+ 

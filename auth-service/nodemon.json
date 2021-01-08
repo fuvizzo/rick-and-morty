@@ -1,0 +1,16 @@
+{
+  "restartable": "rs",
+  "ignore": [
+    "node_modules"
+  ],
+  "verbose": true,
+  "watch": [
+    "build"
+  ],
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ext": "js,json,ts" 
+  
+}
+ 

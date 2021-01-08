@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "CommonJS",
+    "lib": [
+      "ES2015"
+    ],
+    "sourceMap": true,    
+    "outDir": "./build",    
+    "strict": true,
+    "esModuleInterop": true,
+    "noEmitOnError": true,
+    "watch": true,
+    "noImplicitAny": true,
+    "typeRoots": [
+      "./@types", 
+      "../node_modules/@types"
+    ] 
+  },
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",    
+  ],
+  "include": [
+    "src",
+  ]
+}

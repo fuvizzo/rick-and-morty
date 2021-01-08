@@ -1,0 +1,79 @@
+version: "3.4"
+services:
+  user-service:
+    image: user-service
+    container_name: user-service
+    #tty: true
+    build:
+      context: user-service
+      target: dev
+    environment:
+      NODE_ENV: development
+      MONGO_URL: ${MONGO_URL}     
+      LISTENING_PORT: ${USER_SERVICE_LISTENING_PORT}
+      ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}  
+      DEBUG: ${DEBUG} 
+    ports:
+      - 3000:${USER_SERVICE_LISTENING_PORT}
+      - 9229:9229
+    volumes:       
+      - ./user-service:/usr/src/node_app/user-service:delegated 
+      - ./user-service/package.json:/usr/src/node_app/package.json
+      - ./user-service/package-lock.json:/usr/src/node_app/package-lock.json
+      - notused:/usr/src/node_app/user-service/node_modules
+    depends_on:
+      - mongo
+    command: ["npm", "start"]
+  auth-service:
+    image: auth-service
+    container_name: auth-service
+    #tty: true
+    build:
+      context: auth-service
+      target: dev
+    environment:
+      NODE_ENV: development
+      MONGO_URL: ${MONGO_URL}     
+      LISTENING_PORT: ${AUTH_SERVICE_LISTENING_PORT}
+      ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}  
+      REFRESH_TOKEN_SECRET: ${REFRESH_TOKEN_SECRET}  
+      ACCESS_TOKEN_EXPIRATION_TIME: ${ACCESS_TOKEN_EXPIRATION_TIME} 
+      ENCRYPTION_SALT_ROUNDS: ${ENCRYPTION_SALT_ROUNDS} 
+      DEBUG: ${DEBUG}
+    ports:
+      - 3001:${AUTH_SERVICE_LISTENING_PORT}
+      - 9228:9228
+    volumes:
+      - ./auth-service:/usr/src/node_app/auth-service:delegated 
+      - ./auth-service/package.json:/usr/src/node_app/package.json
+      - ./auth-service/package-lock.json:/usr/src/node_app/package-lock.json
+      - notused:/usr/src/node_app/auth-service/node_modules
+    depends_on:
+      - mongo         
+    command: ["npm", "start"]            
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    hostname: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./.docker/mongodb/config/mongod.conf:/etc/mongod.conf
+      - ./.docker/mongodb/initdb.d/:/docker-entrypoint-initdb.d/
+      - ./.docker/mongodb/data/db/:/data/db/
+      #- ./.docker/mongodb/data/log/:/var/log/mongodb/
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+      MONGO_INITDB_USERNAME: ${MONGO_INITDB_USERNAME}
+      MONGO_INITDB_PASSWORD: ${MONGO_INITDB_PASSWORD}
+    command: ["-f", "/etc/mongod.conf"]  
+    healthcheck:
+      test: "[ `echo 'db.runCommand(\"ping\").ok' | mongo localhost/${MONGO_INITDB_DATABASE} --quiet` ] && echo 0 || echo 1"
+      interval: 5s
+      start_period: 10s
+      timeout: 4s
+      retries: 3
+volumes:
+  notused:
