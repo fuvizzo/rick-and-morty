@@ -1,2 +1,2 @@
 /* eslint-disable import/prefer-default-export */
-export const LOGIN = '@@AUTH/LOGIN';
+export const SIGN_IN = '@@AUTH/SIGN_IN';

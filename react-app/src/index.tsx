@@ -4,39 +4,33 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
+
+  Redirect,
 } from 'react-router-dom';
 import './index.css';
 import { Provider } from 'react-redux';
-import App from './App';
+
 import reportWebVitals from './reportWebVitals';
 import store from './store';
+import AuthRoute from './components/auth/auth-route';
+import Dashboard from './components/dashboard';
+import AuthOperations from './components/auth';
 
 const AppContatiner: React.FC = () => (
-
   <Provider store={store}>
     <Router>
-      <Route exact path="/">
-        <div>
-          <h2>Supervisors</h2>
-          <ul>
-            <li>
-              <Link to="/c9c2fe64-3de6-4825-b2c2-5d374e48ec67">Mark Paine</Link>
-            </li>
-            <li>
-              <Link to="/c09fe191-a062-4458-b1fe-f02f3b3801d9">John Taylor</Link>
-            </li>
-          </ul>
-        </div>
-      </Route>
       <Switch>
-        <Route path="/:userId">
-          <App />
+        <Route exact path="/">
+          <Redirect to="/authentication/sign-in" />
         </Route>
+        <Route path="/authentication">
+          <AuthOperations />
+        </Route>
+        <AuthRoute path="/dashboard">
+          <Dashboard />
+        </AuthRoute>
       </Switch>
-
     </Router>
-
   </Provider>
 );
 

@@ -1,13 +1,18 @@
 import * as AuthActions from './constants';
 
 export interface IAuth {
+  userData?: IUserData
+  isAuthenticated: boolean
+}
+
+export interface IUserData {
   id: string
   name: string
 }
 
-interface GetData {
-  type: typeof AuthActions.GET_DATA
-  payload: IAuth
+interface SignIn {
+  type: typeof AuthActions.SIGN_IN
+  payload: IUserData
 }
 
-export type AuthActionTypes = GetData;
+export type AuthActionTypes = SignIn;

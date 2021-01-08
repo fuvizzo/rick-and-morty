@@ -7,8 +7,7 @@ import {
 import * as AuthActions from './constants';
 
 export const initialState: IAuth = {
-  id: '',
-  name: '',
+  isAuthenticated: false,
 };
 
 const AuthReducer: Reducer<IAuth, AuthActionTypes> = produce(
@@ -17,9 +16,9 @@ const AuthReducer: Reducer<IAuth, AuthActionTypes> = produce(
     action: AuthActionTypes,
   ): void => {
     switch (action.type) {
-      case AuthActions.LOGIN:
-        draft.id = action.payload.id;
-        draft.name = action.payload.name;
+      case AuthActions.SIGN_IN:
+        draft.userData = action.payload;
+        draft.isAuthenticated = true;
         break;
     }
   }, initialState,

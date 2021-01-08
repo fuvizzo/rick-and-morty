@@ -23,19 +23,12 @@ const connector = connect(
 type PropsFromRedux = ConnectedProps<typeof connector>
 
 const App: React.FC<PropsFromRedux> = (props) => {
-  const { login, loading, auth } = props;
-  const { userId } = useParams<Record<string, string | undefined>>();
-
-  React.useEffect(() => {
-    if (userId) {
-      login('foo', 'boo');
-    }
-  }, [userId]);
+  const { loading, auth } = props;
 
   return (
     <div className="App">
-      <Link to="/">Back</Link>
-        {auth.name !== '' && (`Current user: ${auth.name} (userId: ${auth.id})`)}
+
+        {auth.name !== '' && (`Welcome ${auth.name}`)}
         <CharacterList />
     </div>
   );

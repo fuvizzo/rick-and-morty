@@ -4,7 +4,7 @@ import { connect, ConnectedProps } from 'react-redux';
 // import User from './user-record';
 import * as characterListActions from '../../store/characters/thunk';
 import * as uiActions from '../../store/ui/actions';
-import { ICharacter, ICharacterData } from '../../store/characters/types';
+import { ICharacterData } from '../../store/characters/types';
 import { RootState } from '../../store';
 
 const connector = connect(
