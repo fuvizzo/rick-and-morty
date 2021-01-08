@@ -24,7 +24,7 @@ const Dashboard: React.FC<PropsFromRedux> = (props) => {
 
   return (
     <div>
-      {auth.userData && (`Welcome ${auth.userData.name}`)}
+      {auth.userData && (`Welcome ${auth.userData.firstName} ${auth.userData.lastName}`)}
       <button
         data-testid="more-btn"
         onClick={signOutHandler}

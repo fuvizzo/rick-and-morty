@@ -2,6 +2,7 @@ import express, {
   Express, Request, Response, NextFunction,
 } from 'express';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import healthcheck from 'express-healthcheck';
 import asyncHandler from 'express-async-handler';
 import IoCcontainer from '../config/dependencies';
@@ -16,6 +17,8 @@ const { authController }: { authController: IAuthController } = IoCcontainer.cra
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bodyParser.json());
+
+app.use(cookieParser());
 
 app.use('/_health', healthcheck());
 

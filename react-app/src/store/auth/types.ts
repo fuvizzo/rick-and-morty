@@ -8,8 +8,8 @@ export interface IAuth {
 }
 
 export interface IUserData {
-  id: string
-  name: string
+  firstName: string
+  lastName: string
 }
 
 interface SignIn {

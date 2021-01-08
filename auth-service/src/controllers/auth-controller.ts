@@ -18,6 +18,24 @@ import IAuthController from '../contracts/controllers';
 
 const debug = Debug('auth-controller');
 
+const createAuthCookie = (res: Response,
+  firstName: string,
+  lastName: string,
+  accessToken: string,
+  refreshToken: string): void => {
+  res.cookie('auth', {
+    userData: {
+      firstName,
+      lastName,
+    },
+    accessToken,
+    refreshToken,
+  }, {
+    maxAge: Number(process.env.AUTH_COOKIE_MAX_AGE),
+    httpOnly: true,
+  });
+};
+
 class AuthController implements IAuthController {
   accountService: IAccountService<string>;
 
@@ -55,9 +73,9 @@ class AuthController implements IAuthController {
       if (user) {
         next(new AppError('Email already in use', 409));
       } else {
-        const userId:string = await this.accountService.create(account, basicInfo);
+        const userId: string = await this.accountService.create(account, basicInfo);
 
-        const authTokenBody:IAuthTokenBody = {
+        const authTokenBody: IAuthTokenBody = {
           userId,
           userName: account.email,
           roles: account.roles!,
@@ -65,11 +83,9 @@ class AuthController implements IAuthController {
 
         const accessToken: string = this.authTokenService.createAccessToken(authTokenBody);
         const refreshToken: string = await this.authTokenService.createRefreshToken(authTokenBody);
-        res.status(201);
-        res.json({
-          accessToken,
-          refreshToken,
-        });
+        createAuthCookie(res, firstName, lastName, accessToken, refreshToken);
+        res.status(204);
+        res.end();
       }
     }
   };
@@ -90,18 +106,16 @@ class AuthController implements IAuthController {
       const userAccount: IUserAccount<string> | null = await this.accountService.getByEmail(email);
 
       if (userAccount && await bcrypt.compare(password, userAccount.password)) {
-        const authTokenBody:IAuthTokenBody = {
+        const authTokenBody: IAuthTokenBody = {
           userId: userAccount.id!,
           userName: userAccount.email,
           roles: userAccount.roles!,
         };
         const accessToken: string = this.authTokenService.createAccessToken(authTokenBody);
         const refreshToken: string = await this.authTokenService.createRefreshToken(authTokenBody);
-
-        res.json({
-          accessToken,
-          refreshToken,
-        });
+        createAuthCookie(res, userAccount.firstName, userAccount.lastName, accessToken, refreshToken);
+        res.status(204);
+        res.end();
       } else {
         next(new AppError('Username or password incorrect', 401));
       }
@@ -135,7 +149,7 @@ class AuthController implements IAuthController {
     const authHeader = req.headers.authorization;
     if (authHeader) {
       const token = authHeader.split(' ')[1];
-      const isLoggedOut:boolean = await this.authTokenService.deleteRefreshToken(token);
+      const isLoggedOut: boolean = await this.authTokenService.deleteRefreshToken(token);
       if (isLoggedOut) {
         res.status(204);
         res.end();

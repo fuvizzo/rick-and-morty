@@ -14,17 +14,7 @@ const signInWithEmailAndPassword = (email: string, password:string): AppThunk =>
       email,
       password,
     });
-    console.log(results.data);
-    const authData: IAuth = {
-      userData: {
-        id: '123',
-        name: 'Foo Boo',
-      },
-      accessToken: 'foo',
-      refreshToken: 'boo',
-      isAuthenticated: false,
-
-    };
+    const authData: IAuth = results.data;
     dispatch(AuthActions.signIn(authData));
   }, dispatch);
 };
@@ -35,12 +25,13 @@ const signOut = (): AppThunk => async (dispatch, getState) => {
       auth: {
         refreshToken,
       },
-
     } = getState();
-
-    // todo build sign-out request
-    // const results: AxiosResponse = await axios.post(URL);
-    // const user: IUserData = results.data;
+    await axios.post(`${AUTH_SERVICE_URL}/sign-out`, null,
+      {
+        headers: {
+          Authorization: `Bearer ${refreshToken}`,
+        },
+      });
 
     dispatch(AuthActions.signOut());
   }, dispatch);

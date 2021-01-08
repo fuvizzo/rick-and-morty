@@ -31,7 +31,7 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
     { isAuthenticated && <Redirect to="/dashboard" />}
     <button
         data-testid="more-btn"
-        onClick={() => signInHandler('username', 'password')}
+        onClick={() => signInHandler('fulvio.cusimano@hotmail.com', 'password')}
       >
     Sign In
       </button>
