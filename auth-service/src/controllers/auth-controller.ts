@@ -149,9 +149,11 @@ class AuthController implements IAuthController {
   }
 
   signOut = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const authHeader = req.headers.authorization;
-    if (authHeader) {
-      const token = authHeader.split(' ')[1];
+    const token = req.cookies['refresh-token'];
+    const { error } = RefreshTokenSchema.validate(token);
+    if (error) {
+      next(new AppError('No refresh token provided', 401));
+    } else {
       const isLoggedOut: boolean = await this.authTokenService.deleteRefreshToken(token);
       if (isLoggedOut) {
         res.status(204);
@@ -159,8 +161,6 @@ class AuthController implements IAuthController {
       } else {
         next(new AppError('Unauthorized', 401));
       }
-    } else {
-      next(new AppError('Unauthorized', 401));
     }
   };
 }
