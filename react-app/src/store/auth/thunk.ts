@@ -4,7 +4,7 @@ import * as AuthActions from './actions';
 import buildRequestAndDispatchAction from '../helpers';
 
 import { AppThunk } from '..';
-import { IAuth, IUserData } from './types';
+import { IAuth } from './types';
 
 const AUTH_SERVICE_URL: string = '/auth-service-api';
 
@@ -19,19 +19,11 @@ const signInWithEmailAndPassword = (email: string, password:string): AppThunk =>
   }, dispatch);
 };
 
-const signOut = (): AppThunk => async (dispatch, getState) => {
+const signOut = (): AppThunk => async (dispatch) => {
   buildRequestAndDispatchAction(async () => {
-    const {
-      auth: {
-        refreshToken,
-      },
-    } = getState();
-    await axios.post(`${AUTH_SERVICE_URL}/sign-out`, null,
-      {
-        headers: {
-          Authorization: `Bearer ${refreshToken}`,
-        },
-      });
+    await axios.post(`${AUTH_SERVICE_URL}/sign-out`, null, {
+      withCredentials: true,
+    });
 
     dispatch(AuthActions.signOut());
   }, dispatch);

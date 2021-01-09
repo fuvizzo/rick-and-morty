@@ -6,7 +6,7 @@ import { IAuth } from '../../store/auth/types';
 
 const connector = connect(
   (state: RootState) => ({
-    auth: state.auth,
+    auth: state.user.auth,
   }),
 );
 

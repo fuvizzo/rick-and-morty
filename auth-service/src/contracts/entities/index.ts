@@ -19,7 +19,7 @@ export interface IUserAccount<T> extends IAccount, IBasicInfo {
   id?: T
 }
 
-export interface IAuthTokenBody {
+export interface IAuthTokenBody extends IBasicInfo {
   userId: string
   userName: string,
   roles: RoleType[]

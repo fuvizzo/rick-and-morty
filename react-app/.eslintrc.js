@@ -27,7 +27,7 @@ module.exports = {
     // 'no-use-before-define': 'off',
     // 'no-unused-vars': 'off',
     'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.ts'] }],
-    'no-param-reassign': 'off',
+
     'import/extensions': [
       'error',
       'ignorePackages',

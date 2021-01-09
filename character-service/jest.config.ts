@@ -6,7 +6,7 @@ const config: Config.InitialOptions = {
   ...{
     rootDir: '../',
     roots: [
-      '<rootDir>/user-service/src',
+      '<rootDir>/character-service/src',
     ],
   },
 };

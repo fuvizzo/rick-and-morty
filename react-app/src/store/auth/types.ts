@@ -1,15 +1,19 @@
 import * as AuthActions from './constants';
 
 export interface IAuth {
-  userData?: IUserData
   isAuthenticated: boolean
-  refreshToken?: string
+  tokenExpiration?: number
   accessToken?: string
 }
 
 export interface IUserData {
   firstName: string
   lastName: string
+}
+
+export interface IUser {
+  auth: IAuth
+  userInfo?: IUserData
 }
 
 interface SignIn {

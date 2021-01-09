@@ -107,6 +107,7 @@ describe('Auth APIs - integration tests', () => {
         userId: 'abc123',
         userName: accountInfo.email,
         roles: [RoleType.Customer],
+        ...basicInfo,
       });
       const res = <any> await buildRequestForTestUser('token', {
         token,
@@ -134,6 +135,7 @@ describe('Auth APIs - integration tests', () => {
         userId: 'abc123',
         userName: accountInfo.email,
         roles: [RoleType.Customer],
+        ...basicInfo,
       });
 
       const res = <any> await request(app).post('/sign-out')

@@ -1,4 +1,4 @@
-import { IUserData, AuthActionTypes, IAuth } from './types';
+import { AuthActionTypes, IAuth } from './types';
 import * as AuthActions from './constants';
 
 const signIn = (authData: IAuth): AuthActionTypes => ({

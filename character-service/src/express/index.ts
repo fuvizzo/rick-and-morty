@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 
 app.use('/_health', healthcheck());
 
-app.use('/users', authRouter);
+app.use('/characters', authRouter);
 
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

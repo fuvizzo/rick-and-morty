@@ -24,6 +24,12 @@ export default merge(common, {
         pathRewrite: { '^/auth-service-api': '' },
         changeOrigin: true,
         secure: false,
+        cookieDomainRewrite: 'localhost',
+        /*  onProxyReq: (proxyReq) => {
+          if (proxyReq.getHeader('origin')) {
+            proxyReq.setHeader('origin', process.env.REACT_APP_AUTH_SERVICE_URL as string);
+          }
+        }, */
       },
     },
 

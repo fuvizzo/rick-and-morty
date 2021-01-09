@@ -1,27 +1,38 @@
-export interface IAddress {
-  street: string
-  streetNumber: string
-  city: string
-  zipCode: string
-  country: string
+export interface ICharacter {
+  id: number
+  name: string
+  status: string
+  species: string
+  type: string
+  gender: string
+  image: string
+  episode: string[]
+  url: string
+  created: string
+  /* origin
+  location */
+  favorite: boolean
 }
 
-export interface IUserInfo {
-  phoneNumber: string
-  address: IAddress
+export interface IInfo {
+  count: number
+  pages: number
+  next: string
+  prev?: string
 }
 
-export interface IUser<T> extends IUserInfo {
-  id?: T
+export type ICharacterHash = { [id: number]: ICharacter };
+
+export interface ICharacterList {
+  results: ICharacterHash
+  info: IInfo
 }
 
-export enum RoleType {
-  Admin,
-  Customer
+export interface IUserPreferences {
+  userId: string
+  favoriteCharacterIds: number[]
 }
 
 export interface IAuthToken {
   userId: string
-  username: string,
-  roles: RoleType[]
 }

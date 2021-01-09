@@ -21,6 +21,7 @@ module.exports = {
     'import/no-extraneous-dependencies': ['off', {
       devDependencies: ['/**/*.test.ts', '/**/*.spec.ts'],
     }],
+    'no-param-reassign': 'off',
     '@typescript-eslint/no-explicit-any': 'error',
     'no-unused-vars': 'off',
     'no-shadow': 'off',

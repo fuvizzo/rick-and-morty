@@ -19,21 +19,17 @@ import IAuthController from '../contracts/controllers';
 const debug = Debug('auth-controller');
 
 const createAuthCookie = (res: Response,
-  firstName: string,
-  lastName: string,
-  accessToken: string,
+
   refreshToken: string): void => {
-  res.cookie('auth', {
-    userData: {
-      firstName,
-      lastName,
-    },
-    accessToken,
+  res.cookie('refresh-token',
     refreshToken,
-  }, {
-    maxAge: Number(process.env.AUTH_COOKIE_MAX_AGE),
-    httpOnly: true,
-  });
+    {
+      domain: 'auth-service',
+      secure: process.env.NODE_ENV === 'production',
+      // sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+      maxAge: Number(process.env.AUTH_COOKIE_MAX_AGE),
+      httpOnly: true,
+    });
 };
 
 class AuthController implements IAuthController {
@@ -78,14 +74,18 @@ class AuthController implements IAuthController {
         const authTokenBody: IAuthTokenBody = {
           userId,
           userName: account.email,
+          firstName,
+          lastName,
           roles: account.roles!,
         };
 
         const accessToken: string = this.authTokenService.createAccessToken(authTokenBody);
         const refreshToken: string = await this.authTokenService.createRefreshToken(authTokenBody);
-        createAuthCookie(res, firstName, lastName, accessToken, refreshToken);
-        res.status(204);
-        res.end();
+        createAuthCookie(res, refreshToken);
+        res.status(201);
+        res.json({
+          accessToken,
+        });
       }
     }
   };
@@ -110,12 +110,16 @@ class AuthController implements IAuthController {
           userId: userAccount.id!,
           userName: userAccount.email,
           roles: userAccount.roles!,
+          firstName: userAccount.firstName,
+          lastName: userAccount.lastName,
         };
         const accessToken: string = this.authTokenService.createAccessToken(authTokenBody);
         const refreshToken: string = await this.authTokenService.createRefreshToken(authTokenBody);
-        createAuthCookie(res, userAccount.firstName, userAccount.lastName, accessToken, refreshToken);
-        res.status(204);
-        res.end();
+        createAuthCookie(res, refreshToken);
+
+        res.json({
+          accessToken,
+        });
       } else {
         next(new AppError('Username or password incorrect', 401));
       }

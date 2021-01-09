@@ -18,7 +18,7 @@ const storeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
   characterList: CharacterListReducer,
-  auth: AuthReducer,
+  user: AuthReducer,
   ui: UIReducer,
 });
 

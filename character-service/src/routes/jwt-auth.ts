@@ -3,8 +3,10 @@ import {
 } from 'express';
 import jwt from 'jsonwebtoken';
 import Debug from 'debug';
-import { IAuthToken, RoleType } from '../contracts/entities';
+import { asValue, AwilixContainer } from 'awilix';
+import { IAuthToken } from '../contracts/entities';
 import AppError from '../error/app-error';
+import IoCcontainer from '../config/dependencies';
 
 const debug = Debug('jwt-auth-service');
 
@@ -19,6 +21,10 @@ export default {
           const data = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string) as IAuthToken;
 
           req.authToken = data;
+          req.scope = IoCcontainer.createScope();
+          (<AwilixContainer>req.scope).register({
+            currentUserId: asValue(data.userId),
+          });
           debug('the request was successfully authenticated');
           next();
         } catch (err) {
@@ -33,17 +39,7 @@ export default {
   },
   authorizeRequest(req: Request, res: Response, next: NextFunction) {
     const token:IAuthToken = req.authToken as IAuthToken;
-    if (token.userId === req.params.userId
-      || token.roles.some((role) => role === RoleType.Admin)) {
-      next();
-    } else {
-      next(new AppError('Forbidden: Not enough permission for user', 403));
-    }
-  },
-
-  authorizeOnlyAdminRequest(req: Request, res: Response, next: NextFunction) {
-    const token:IAuthToken = req.authToken as IAuthToken;
-    if (token.roles.some((role) => role === RoleType.Admin)) {
+    if (token.userId === req.params.userId) {
       next();
     } else {
       next(new AppError('Forbidden: Not enough permission for user', 403));

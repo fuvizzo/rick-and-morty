@@ -7,7 +7,7 @@ import { RootState } from '../../store';
 
 const connector = connect(
   (state: RootState) => ({
-    auth: state.auth,
+    user: state.user,
 
   }),
   authActions,
@@ -18,8 +18,11 @@ type PropsFromRedux = ConnectedProps<typeof connector>
 export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
   const {
     signInWithEmailAndPassword,
-    auth: {
-      isAuthenticated,
+    user: {
+      auth: {
+        isAuthenticated,
+      }
+      ,
     },
   } = props;
 

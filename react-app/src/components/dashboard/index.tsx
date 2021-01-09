@@ -9,7 +9,7 @@ import { RootState } from '../../store';
 const connector = connect(
   (state: RootState) => ({
     loading: state.ui.loading,
-    auth: state.auth,
+    user: state.user,
   }),
   authActions,
 );
@@ -17,14 +17,14 @@ const connector = connect(
 type PropsFromRedux = ConnectedProps<typeof connector>
 
 const Dashboard: React.FC<PropsFromRedux> = (props) => {
-  const { loading, auth, signOut } = props;
+  const { loading, user, signOut } = props;
   const signOutHandler = () => {
     signOut();
   };
 
   return (
     <div>
-      {auth.userData && (`Welcome ${auth.userData.firstName} ${auth.userData.lastName}`)}
+      Welcome {user.userInfo!.firstName} {user.userInfo!.lastName}
       <button
         data-testid="more-btn"
         onClick={signOutHandler}

@@ -7,7 +7,7 @@ const config: Config.InitialOptions = {
   // `<rootDir>` is a token Jest substitutes
   roots: [
     '<rootDir>/auth-service/src',
-    '<rootDir>/user-service/src',
+    '<rootDir>/character-service/src',
   ],
   preset: 'ts-jest',
   // Jest transformations -- this adds support for TypeScript

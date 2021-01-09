@@ -1,12 +1,8 @@
-import { IUser, IUserInfo } from '../entities';
+import { ICharacter, IUserPreferences } from '../entities';
 
 export interface IRepository { }
 
-interface IUserRepository<T> extends IRepository {
-  update: (userId: T, userInfo: IUserInfo) => Promise<IUser<T> | null>
-  delete: (userId: T) => Promise<void>
-  getById: (userId: T) => Promise<IUser<T> | null>
-  getSet: (size: number, lastId?: T) => Promise<IUser<T>[]>
+export interface IUserPreferencesRepository extends IRepository {
+  update: (userPreferences: IUserPreferences) => Promise<void>
+  get: (userId: string) => Promise<IUserPreferences | null>
 }
-
-export default IUserRepository;

@@ -1,7 +1,10 @@
-import { IUser, IUserInfo } from '../entities';
+import { ICharacter, ICharacterList } from '../entities';
 
-export interface IUserService<T> {
-  updateUser: (userId: T, userInfo: IUserInfo) => Promise<IUser<T> | null>
-  getUsers: (size: number, lastId?: T) => Promise<IUser<T>[]>
-  deleteUser: (userId: T) => Promise<void>
+export interface IUserPreferencesService {
+  toggleFavorite: (characterId: number) => Promise<boolean>
+}
+
+export interface ICharacterService {
+  getSet: (pageURL?: string) => Promise<ICharacterList>
+  getOne: (characterId: number) => Promise<ICharacter | null>
 }
