@@ -131,12 +131,11 @@ class AuthController implements IAuthController {
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
-    const { error } = RefreshTokenSchema.validate(req.body);
+    const token = req.cookies['refresh-token'];
+    const { error } = RefreshTokenSchema.validate(token);
     if (error) {
       next(new AppError('No refresh token provided', 401));
     } else {
-      const { token } = req.body;
-
       const refreshTokenBody: IAuthTokenBody | null = await this.authTokenService.verifyRefreshToken(token);
       if (!refreshTokenBody) {
         next(new AppError('Invalid refresh token', 403));

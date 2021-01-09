@@ -10,7 +10,7 @@ const triggerCharacterSearch = (query: string): UIActionTypes => ({
   payload: { query },
 });
 
-const setError = (message: string): UIActionTypes => ({
+const setError = (message: string | null): UIActionTypes => ({
   type: UIActions.SET_ERROR,
   payload: { message },
 });

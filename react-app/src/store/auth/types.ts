@@ -21,8 +21,13 @@ interface SignIn {
   payload: IAuth
 }
 
+interface renewateSilentlyAcccessToken {
+  type: typeof AuthActions.RENEWATE_SILENTLY_ACCESS_TOKEN
+  payload: IAuth
+}
+
 interface SignOut {
   type: typeof AuthActions.SIGN_OUT
 }
 
-export type AuthActionTypes = SignIn | SignOut;
+export type AuthActionTypes = SignIn | SignOut | renewateSilentlyAcccessToken;

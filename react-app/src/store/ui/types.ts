@@ -14,7 +14,7 @@ interface TriggerUserSearch {
 interface SetError {
   type: typeof UIActions.SET_ERROR
   payload: {
-    message: string
+    message: string | null
   }
 }
 

@@ -25,6 +25,4 @@ export const SignInSchema = Joi.object({
   password,
 });
 
-export const RefreshTokenSchema = Joi.object({
-  token: Joi.string().required().label(FieldProps.RefreshToken.LABEL),
-});
+export const RefreshTokenSchema = Joi.string().required().label(FieldProps.RefreshToken.LABEL);

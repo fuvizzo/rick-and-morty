@@ -10,7 +10,13 @@ const signOut = (): AuthActionTypes => ({
   type: AuthActions.SIGN_OUT,
 });
 
+const renewateSilentlyAcccessToken = (authData: IAuth): AuthActionTypes => ({
+  type: AuthActions.RENEWATE_SILENTLY_ACCESS_TOKEN,
+  payload: authData,
+});
+
 export {
   signIn,
   signOut,
+  renewateSilentlyAcccessToken,
 };

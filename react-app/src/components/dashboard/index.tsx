@@ -1,28 +1,51 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-
+import { Redirect } from 'react-router-dom';
 import CharacterList from '../character-list';
-
 import * as authActions from '../../store/auth/thunk';
+import { signOut as localSignOut } from '../../store/auth/actions';
 import { RootState } from '../../store';
 
 const connector = connect(
   (state: RootState) => ({
-    loading: state.ui.loading,
     user: state.user,
+    auth: state.user.auth,
+    ui: state.ui,
   }),
-  authActions,
+  { localSignOut, ...authActions },
 );
 
 type PropsFromRedux = ConnectedProps<typeof connector>
 
 const Dashboard: React.FC<PropsFromRedux> = (props) => {
   const {
-    loading, user, signOut,
+    auth,
+    ui,
+    user,
+    signOut,
+    localSignOut,
+    getNewAccessToken,
   } = props;
+
+  const setIntervalRef = React.useRef<NodeJS.Timeout>();
+
+  React.useEffect(() => {
+    if (ui.error) {
+      localSignOut();
+    } else if (!auth.isAuthenticated) {
+      getNewAccessToken();
+    } else {
+      setIntervalRef.current = setInterval(() => {
+        getNewAccessToken(true);
+      }, auth.tokenExpiration! * 1000 - Date.now());
+    }
+
+    return () => clearInterval(setIntervalRef.current!);
+  }, [auth.isAuthenticated, ui.error]);
 
   return (
     <div>
+       {ui.error && <Redirect to="/authentication/sign-in" />}
       Welcome {user.userInfo!.firstName} {user.userInfo!.lastName}
       <button
         data-testid="more-btn"
