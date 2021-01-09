@@ -1,7 +1,7 @@
 import { ICharacter, ICharacterList } from '../entities';
 
 export interface IUserPreferencesService {
-  toggleFavorite: (characterId: number) => Promise<boolean>
+  toggleFavorite: (characterId: number) => Promise<void>
 }
 
 export interface ICharacterService {

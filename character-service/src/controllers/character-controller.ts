@@ -19,10 +19,10 @@ class CharacterController implements ICharacterController {
   }
 
   getCharacters = async (req: Request, res: Response, next: NextFunction) => {
-    const { pageURL } = req.query;
+    const { page } = req.query;
     let characters;
-    if (typeof pageURL !== 'undefined') {
-      characters = await this.getScopedContainer(req).characterService.getSet(<string>pageURL);
+    if (typeof page !== 'undefined') {
+      characters = await this.getScopedContainer(req).characterService.getSet(<string>page);
     } else {
       characters = await this.getScopedContainer(req).characterService.getSet();
     }
@@ -37,13 +37,10 @@ class CharacterController implements ICharacterController {
     } = req.body;
     const character = await this.getScopedContainer(req).characterService.getOne(characterId);
     if (character) {
-      const succesful = await this.getScopedContainer(req).userPreferencesService.toggleFavorite(characterId);
-      if (succesful) {
-        res.status(204);
-        res.end();
-      } else {
-        next(new AppError('Resource not found', 404));
-      }
+      await this.getScopedContainer(req).userPreferencesService.toggleFavorite(characterId);
+
+      res.status(204);
+      res.end();
     } else {
       next(new AppError('Resource not found', 404));
     }

@@ -22,7 +22,7 @@ container.register({
   userPreferencesRepository: asClass(UserPreferencesRepository),
   characterController: asClass(CharacterController),
   characterService: asFunction(CharacterService).scoped(),
-  userPreferencesService: asFunction(UserPreferencesService),
+  userPreferencesService: asFunction(UserPreferencesService).scoped(),
 });
 
 export default container;

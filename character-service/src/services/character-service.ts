@@ -14,9 +14,11 @@ export default ({
     userPreferencesRepository: IUserPreferencesRepository
   }): ICharacterService => ({
   getSet: async (
-    pageURL?: string,
+    page?: string,
   ) => {
-    const response: AxiosResponse = await axios.get(pageURL || `${URL}/character`);
+    const response: AxiosResponse = await axios.get(
+      `${URL}/character?page=${page}` || `${URL}/character`,
+    );
 
     const userPreferences = await userPreferencesRepository.get(currentUserId);
 

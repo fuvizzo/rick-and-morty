@@ -56,23 +56,23 @@ describe('User APIs - integration tests', () => {
       accessToken: string | null,
     ) => request(app).put(`/characters/favorites/${testUserId}`)
       .set('Content-type', 'application/json')
-      .set('Authorization', accessToken ? `Bearer ${accessToken}` : '')
-      .send({
-        characterId: 23,
-      });
+      .set('Authorization', accessToken ? `Bearer ${accessToken}` : '');
 
-    describe('(Allows an User to edit his/her own data)', () => {
+    describe('Marks as favorite the Character with id = 23', () => {
       it('succesfully returns a 204 response', async () => {
         await userPreferencesRepository.update(
           testUserPreferences,
         );
-        const res = <any> await buildUpdateRequest(testUserId1, accessToken);
+        const res = <any> await buildUpdateRequest(testUserId1, accessToken)
+          .send({
+            characterId: 23,
+          });
 
         expect(res.statusCode).toEqual(204);
 
         const updatedUser = await userPreferencesRepository.get(testUserId1);
 
-        expect(updatedUser!.favoriteCharacterIds.length).toEqual(4);
+        expect(updatedUser!.favoriteCharacterIds.length).toEqual(5);
         expect(updatedUser!.favoriteCharacterIds.indexOf(23)).not.toEqual(-1);
       });
 
@@ -95,6 +95,25 @@ describe('User APIs - integration tests', () => {
         expect({}).toEqual(400);
       }); */
     });
+
+    describe('Marks as unfavorite the Character with id = 12', () => {
+      it('succesfully returns a 204 response', async () => {
+        await userPreferencesRepository.update(
+          testUserPreferences,
+        );
+        const res = <any> await buildUpdateRequest(testUserId1, accessToken)
+          .send({
+            characterId: 12,
+          });
+
+        expect(res.statusCode).toEqual(204);
+
+        const updatedUser = await userPreferencesRepository.get(testUserId1);
+
+        expect(updatedUser!.favoriteCharacterIds.length).toEqual(3);
+        expect(updatedUser!.favoriteCharacterIds.indexOf(12)).toEqual(-1);
+      });
+    });
   });
 
   describe('"characters" endpoint - get', () => {
@@ -105,13 +124,14 @@ describe('User APIs - integration tests', () => {
 
     describe('Allows an auth user to get the list of Characters', () => {
       describe('return the first 20 characters with favorite flag set according the User preferences', () => {
-        it.only('succesfully returns a 200 response ', async () => {
+        it('succesfully returns a 200 response ', async () => {
           await userPreferencesRepository.update(
             testUserPreferences,
           );
 
           const res = <any> await buildGetRequest(accessToken);
           expect(res.statusCode).toEqual(200);
+
           Object.keys(res.body.results).forEach((key:string) => {
             const element:ICharacter = res.body.results[key];
             expect(element.favorite).toEqual(
@@ -120,10 +140,26 @@ describe('User APIs - integration tests', () => {
           });
         });
       });
+    });
 
-      it('returns a 403 response', async () => {
-        const res = <any> await buildGetRequest(accessToken);
-        expect(res.statusCode).toEqual(403);
+    describe('return the 20 characters of page 2 with favorite flag set according the User preferences', () => {
+      it('succesfully returns a 200 response ', async () => {
+        await userPreferencesRepository.update(
+          testUserPreferences,
+        );
+
+        const res = <any> await buildGetRequest(accessToken)
+          .query({
+            page: 2,
+          });
+        expect(res.statusCode).toEqual(200);
+        expect(Number(Object.keys(res.body.results)[0])).toEqual(21);
+        Object.keys(res.body.results).forEach((key:string) => {
+          const element:ICharacter = res.body.results[key];
+          expect(element.favorite).toEqual(
+            testUserPreferences.favoriteCharacterIds.includes(element.id),
+          );
+        });
       });
     });
   });

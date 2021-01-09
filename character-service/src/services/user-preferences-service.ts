@@ -5,29 +5,31 @@ import { IUserPreferencesService } from '../contracts/services';
 
 export default (
   {
-    // currentUserId,
+    currentUserId,
     userPreferencesRepository,
   }:
     {
-      // currentUserId: string,
+      currentUserId: string,
       userPreferencesRepository: IUserPreferencesRepository
     },
 ): IUserPreferencesService => ({
   toggleFavorite: async (
     characterId: number,
   ) => {
-    const userPreferences = await userPreferencesRepository.get('currentUserId');
+    let userPreferences = await userPreferencesRepository.get(currentUserId);
     if (userPreferences) {
-      const newPreferences = { ...userPreferences };
       const indexId = userPreferences.favoriteCharacterIds.indexOf(characterId);
       if (indexId !== -1) {
-        newPreferences.favoriteCharacterIds.splice(indexId, 1);
+        userPreferences.favoriteCharacterIds.splice(indexId, 1);
       } else {
-        newPreferences.favoriteCharacterIds.push(characterId);
+        userPreferences.favoriteCharacterIds.push(characterId);
       }
-      await userPreferencesRepository.update(newPreferences);
-      return true;
+    } else {
+      userPreferences = {
+        userId: currentUserId,
+        favoriteCharacterIds: [characterId],
+      };
     }
-    return false;
+    await userPreferencesRepository.update(userPreferences);
   },
 });
