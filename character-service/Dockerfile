@@ -12,7 +12,7 @@ RUN npm install --production --silent
 
 ENV PATH /usr/src/node_app/node_modules/.bin:$PATH 
 
-WORKDIR /usr/src/node_app/user-service   
+WORKDIR /usr/src/node_app/character-service   
 
 COPY . . 
 
@@ -34,7 +34,7 @@ RUN npm install
 ENV PATH /usr/src/node_app/node_modules/.bin:$PATH
 
 # copy in our source code last, as it changes the most
-WORKDIR /usr/src/node_app/user-service
+WORKDIR /usr/src/node_app/character-service
 COPY . . 
  
 CMD ["npm", "start"]

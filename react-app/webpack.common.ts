@@ -46,6 +46,7 @@ const configuration: Configuration = {
     new EnvironmentPlugin([
       'NODE_ENV',
       'REACT_APP_AUTH_SERVICE_URL',
+      'REACT_APP_CHARACTER_SERVICE_URL',
     ]),
   ],
   output: {

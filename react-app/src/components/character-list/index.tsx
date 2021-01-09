@@ -33,11 +33,10 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
 
   React.useEffect(() => {
     getCharacters();
-    // return () => clearTimeout(timeoutRef.current);
   }, []);
 
-  const showMoreHandler = React.useCallback((nextPageUrl: string) => {
-    getCharacters(nextPageUrl);
+  const showMoreHandler = React.useCallback((page: number) => {
+    getCharacters(page);
   }, []);
 
   return <>
@@ -48,12 +47,13 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
         <div key={characterId}>
           {characterId}
           {data.name}
+          {data.favorite && 'Is Favorite'}
         </div>
       );
     })}
     <button
         data-testid="more-btn"
-        onClick={() => showMoreHandler(info.next)}
+        onClick={() => showMoreHandler(1)}
       >
       Show more
       </button>

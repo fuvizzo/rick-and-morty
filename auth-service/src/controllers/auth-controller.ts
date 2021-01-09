@@ -26,7 +26,7 @@ const createAuthCookie = (res: Response,
     {
       domain: 'auth-service',
       secure: process.env.NODE_ENV === 'production',
-      // sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
       maxAge: Number(process.env.AUTH_COOKIE_MAX_AGE),
       httpOnly: true,
     });

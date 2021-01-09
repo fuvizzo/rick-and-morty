@@ -3,7 +3,7 @@ import express, {
 } from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import cors from 'cors';
+
 import healthcheck from 'express-healthcheck';
 import asyncHandler from 'express-async-handler';
 import IoCcontainer from '../config/dependencies';
@@ -20,11 +20,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(cookieParser());
-
-app.use(cors({
-  // origin: '*',
-  credentials: true,
-}));
 
 app.use('/_health', healthcheck());
 
@@ -46,7 +41,7 @@ app.post('/sign-out', asyncHandler(
     next: NextFunction) => authController.signOut(req, res, next),
 ));
 
-app.post('/token', asyncHandler(
+app.get('/token', asyncHandler(
   (req: Request,
     res: Response,
     next: NextFunction) => authController.issueNewAccessToken(req, res, next),

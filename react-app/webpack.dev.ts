@@ -1,6 +1,6 @@
 import path from 'path';
 import { Configuration as WebpackConfiguration } from 'webpack';
-import { Configuration as WebpackDevServerConfiguration, ProxyConfigArray } from 'webpack-dev-server';
+import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
 import { merge } from 'webpack-merge';
 import common from './webpack.common';
 
@@ -30,6 +30,13 @@ export default merge(common, {
             proxyReq.setHeader('origin', process.env.REACT_APP_AUTH_SERVICE_URL as string);
           }
         }, */
+      },
+      '/character-service-api': {
+        target: process.env.REACT_APP_CHARACTER_SERVICE_URL,
+        pathRewrite: { '^/character-service-api': '' },
+        changeOrigin: true,
+        secure: false,
+        cookieDomainRewrite: 'localhost',
       },
     },
 

@@ -9,7 +9,8 @@ import IoCcontainer from '../config/dependencies';
 import ICharacterController from '../contracts/controllers';
 import authService from './jwt-auth';
 
-const { characterController }: { characterController: ICharacterController } = IoCcontainer.cradle;
+const { characterController }:
+  { characterController: ICharacterController } = IoCcontainer.cradle;
 
 const router = express.Router();
 

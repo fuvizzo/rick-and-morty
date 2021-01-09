@@ -4,24 +4,28 @@ import { AppThunk } from '..';
 import { ICharacterHash, ICharacterList } from './types';
 import buildRequestAndDispatchAction from '../helpers';
 
-const URL: string = 'https://rickandmortyapi.com/api';
+const SERVICE_URL: string = '/character-service-api';
 
-const getCharacters = (url?: string): AppThunk => async (dispatch) => {
+const getCharacters = (page?: number): AppThunk => async (dispatch, getState) => {
   buildRequestAndDispatchAction(async () => {
-    const response: AxiosResponse = await axios.get(url || `${URL}/character`);
+    const {
+      user: {
+        auth: {
+          accessToken,
+        },
+      },
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const results: ICharacterHash = response.data.results.reduce((hash:ICharacterHash, item: any) => {
-      const { id } = item;
-      delete item.id;
+    } = getState();
+    const response: AxiosResponse = await axios.get(page
+      ? `${SERVICE_URL}/characters?page=${page}`
+      : `${SERVICE_URL}/characters`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
-      hash[id] = { ...item };
-      return hash;
-    }, {});
-    const characterList: ICharacterList = {
-      results,
-      info: response.data.info,
-    };
+    const characterList: ICharacterList = response.data;
     dispatch(CharacterListActions.getCharacters(characterList));
   }, dispatch);
 };

@@ -17,17 +17,16 @@ const connector = connect(
 type PropsFromRedux = ConnectedProps<typeof connector>
 
 const Dashboard: React.FC<PropsFromRedux> = (props) => {
-  const { loading, user, signOut } = props;
-  const signOutHandler = () => {
-    signOut();
-  };
+  const {
+    loading, user, signOut,
+  } = props;
 
   return (
     <div>
       Welcome {user.userInfo!.firstName} {user.userInfo!.lastName}
       <button
         data-testid="more-btn"
-        onClick={signOutHandler}
+        onClick={signOut}
       >
         Sign Out
       </button>

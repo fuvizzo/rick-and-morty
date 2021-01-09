@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start": "cross-env webpack serve --host 0.0.0.0 --config ./webpack.dev.ts",
-    "start:local": "cross-env NODE_ENV=development REACT_APP_AUTH_SERVICE_URL=http://localhost:3002 webpack serve --config ./webpack.dev.ts",
+    "start:local": "cross-env NODE_ENV=development REACT_APP_CHARACTER_SERVICE_URL=http://localhost:3001 REACT_APP_AUTH_SERVICE_URL=http://localhost:3002 webpack serve --config ./webpack.dev.ts",
     "build": "cross-env NODE_ENV=production webpack --config webpack.prod.js",
     "test": "jest --env=jsdom --coverage",
     "teste2e": "cypress open",

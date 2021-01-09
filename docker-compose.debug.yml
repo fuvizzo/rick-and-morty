@@ -11,6 +11,7 @@ services:
       NODE_ENV: development        
       LISTENING_PORT: ${REACT_APP_LISTENING_PORT}
       REACT_APP_AUTH_SERVICE_URL: http://auth-service:${AUTH_SERVICE_LISTENING_PORT}
+      REACT_APP_CHARACTER_SERVICE_URL: http://character-service:${CHARACTER_SERVICE_LISTENING_PORT}
       DEBUG: ${DEBUG} 
     ports:
       - 3000:${REACT_APP_LISTENING_PORT}

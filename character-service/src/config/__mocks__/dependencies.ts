@@ -8,7 +8,7 @@ import {
 import CharacterController from '../../controllers/character-controller';
 import UserPreferencesModel from '../../frameworks/persistence/mongo-db/models/user-preferences';
 import UserPreferencesRepository from '../../frameworks/persistence/mongo-db/repositories/user-preferences';
-import MongoDbDatabaseService from '../../frameworks/persistence/mongo-db/in-memory/database-service';
+import DatabaseService from '../../frameworks/persistence/mongo-db/in-memory/database-service';
 import CharacterService from '../../services/character-service';
 import UserPreferencesService from '../../services/user-preferences-service';
 
@@ -17,7 +17,7 @@ const container = createContainer({
 });
 
 container.register({
-  databaseService: asClass(MongoDbDatabaseService).singleton(),
+  databaseService: asClass(DatabaseService).singleton(),
   userPreferencesModel: asValue(UserPreferencesModel),
   userPreferencesRepository: asClass(UserPreferencesRepository),
   characterController: asClass(CharacterController),
