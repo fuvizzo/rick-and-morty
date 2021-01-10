@@ -32,8 +32,6 @@ const Dashboard: React.FC<PropsFromRedux> = (props) => {
   React.useEffect(() => {
     if (ui.error) {
       localSignOut();
-    } else if (!auth.isAuthenticated) {
-      getNewAccessToken();
     } else {
       setIntervalRef.current = setInterval(() => {
         getNewAccessToken(true);
@@ -41,7 +39,7 @@ const Dashboard: React.FC<PropsFromRedux> = (props) => {
     }
 
     return () => clearInterval(setIntervalRef.current!);
-  }, [auth.isAuthenticated, ui.error]);
+  }, [ui.error]);
 
   return (
     <div>

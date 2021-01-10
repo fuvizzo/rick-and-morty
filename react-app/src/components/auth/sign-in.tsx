@@ -19,7 +19,7 @@ const connector = connect(
   }),
   {
     setError,
-    signInWithEmailAndPassword: authActions.signInWithEmailAndPassword,
+    ...authActions,
   },
 );
 
@@ -36,6 +36,7 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
     password: 'password',
   });
   const {
+    getNewAccessToken,
     signInWithEmailAndPassword,
     setError,
     user: {
@@ -48,6 +49,12 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
       error,
     },
   } = props;
+
+  React.useEffect(() => {
+    if (!isAuthenticated) {
+      getNewAccessToken();
+    }
+  }, [isAuthenticated]);
 
   const handleUserData = (e: React.FormEvent<HTMLInputElement>): void => {
     setUserLoginData({

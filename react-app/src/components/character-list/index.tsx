@@ -6,6 +6,9 @@ import * as characterListActions from '../../store/characters/thunk';
 import * as uiActions from '../../store/ui/actions';
 import { ICharacterData } from '../../store/characters/types';
 import { RootState } from '../../store';
+import {
+  GridContainer, Card,
+} from './styles';
 
 const connector = connect(
   (state: RootState) => ({
@@ -39,16 +42,16 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
     getCharacters(page);
   }, []);
 
-  return <>
+  return <GridContainer>
     {Object.keys(characters).map((characterId: string) => {
       const data: ICharacterData = characters[characterId];
 
       return (
-        <div key={characterId}>
+        <Card key={characterId}>
           {characterId}
           {data.name}
           {data.favorite && 'Is Favorite'}
-        </div>
+        </Card>
       );
     })}
     <button
@@ -57,7 +60,7 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
       >
       Show more
       </button>
-  </>;
+  </GridContainer>;
 };
 
 export default connector(UserListComponent);

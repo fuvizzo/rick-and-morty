@@ -42,5 +42,9 @@ const Button = styled.button`
 `;
 
 export {
-  Title, FormElemWrapper, Input, Button, Container,
+  Title,
+  FormElemWrapper,
+  Input,
+  Button,
+  Container,
 };
