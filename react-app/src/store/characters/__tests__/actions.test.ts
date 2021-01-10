@@ -1,122 +1,75 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import configureMockStore from 'redux-mock-store';
-import moxios from 'moxios';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import thunk, { ThunkDispatch } from 'redux-thunk';
-import UserActions from '../actions';
+import * as CharacterActions from '../actions';
 import { initialState } from '../reducer';
 import {
-  GET_USERS,
-  CREATE_USER,
-  UPDATE_USER,
-  DELETE_USER,
+  GET_CHARACTERS,
+  TOGGLE_FAVORITE,
 } from '../constants';
 import {
-  getUsers,
-  createUser,
-  updateUser,
-  deleteUser,
+  getCharacters,
+  toggleFavorite,
 } from '../thunk';
-import { IUser, IUserList, UserListActionTypes } from '../types';
-import jsonData from '../../../../mock/db.json';
 
 import { RootState } from '../..';
 
-type DispatchExts = ThunkDispatch<RootState, undefined, UserListActionTypes>;
+import mock from './mock-data';
+import { CharacterListActionTypes, ICharacterList } from '../types';
+
+const mockedCharacterList: ICharacterList = mock;
+
+type DispatchExts = ThunkDispatch<RootState, undefined, CharacterListActionTypes>;
 
 const middlewares = [thunk];
 const mockStore = configureMockStore<RootState, DispatchExts>(middlewares);
-const userList: IUserList = {
-  ...initialState,
-  users: jsonData.users,
-};
 
 const store = mockStore();
-const baseUrl: string = 'http://localhost:3004';
-const fakeUser: IUser = {
-  id: 'd0634484-6c21-4680-9d78-47d46d68e91f',
-  data: {
-    username: 'xyz',
-    name: 'Foo foo',
-    email: 'foo@foo.foo',
-    age: 30,
-    enabled: false,
+store.getState().user = {
+  auth: {
+    accessToken: 'foo',
+    isAuthenticated: true,
   },
 };
+const mockAdapter = new MockAdapter(axios);
+const baseUrl: string = '/character-service-api/characters';
 
-describe('User list actions', () => {
+describe('Character list actions', () => {
   beforeEach(() => {
-    moxios.install();
-  });
-  afterEach(() => {
-    moxios.uninstall();
+    store.clearActions();
   });
 
-  it('should create an action to get user list', () => {
-    moxios.stubRequest(`${baseUrl}/users`, {
-      status: 200,
+  it('should create an action to get character list', () => {
+    mockAdapter.onGet(baseUrl).reply(200, {
       response: {
-        data: userList.users,
+        data: mockedCharacterList,
       },
     });
 
-    const expectedAction: UserListActionTypes = {
-      type: GET_USERS,
-      payload: userList.users,
+    const expectedAction: CharacterListActionTypes = {
+      type: GET_CHARACTERS,
+      payload: mockedCharacterList,
     };
 
-    return store.dispatch<any>(getUsers()).then(() => {
-      expect(UserActions.getUsers(userList.users)).toEqual(expectedAction);
+    return store.dispatch<any>(getCharacters()).then((callback: () => void) => {
+      callback = () => expect(store.getActions()).toEqual([expectedAction]);
     });
   });
 
-  it('should create an action to add a new user', () => {
-    moxios.stubRequest(`${baseUrl}/users`, {
-      status: 200,
-      response: {
-        data: {
-          fakeUser,
-        },
+  it('should create an action to toggle to favorite the character with ID = 1', () => {
+    mockAdapter.onGet(`${baseUrl}/characters/favorites/1`).reply(204);
+
+    const expectedAction: CharacterListActionTypes = {
+      type: TOGGLE_FAVORITE,
+      payload: {
+        characterId: 1,
       },
-    });
-
-    const expectedAction: UserListActionTypes = {
-      type: CREATE_USER,
-      payload: fakeUser,
     };
 
-    return store.dispatch<any>(createUser(fakeUser)).then(() => {
-      expect(UserActions.createUser(fakeUser)).toEqual(expectedAction);
-    });
-  });
-
-  it('should create an action to edit an user', () => {
-    moxios.stubRequest(`${baseUrl}/users/123`, {
-      status: 200,
-      response: {},
-    });
-
-    const expectedAction: UserListActionTypes = {
-      type: UPDATE_USER,
-      payload: fakeUser,
-    };
-
-    return store.dispatch<any>(updateUser(fakeUser)).then(() => {
-      expect(UserActions.updateUser(fakeUser)).toEqual(expectedAction);
-    });
-  });
-
-  it('should create an action to delete an user', () => {
-    moxios.stubRequest(`${baseUrl}/users/123`, {
-      status: 200,
-      response: {},
-    });
-
-    const expectedAction: UserListActionTypes = {
-      type: DELETE_USER,
-      payload: { userId: fakeUser.id },
-    };
-
-    return store.dispatch<any>(deleteUser(fakeUser.id)).then(() => {
-      expect(UserActions.deleteUser(fakeUser.id)).toEqual(expectedAction);
+    return store.dispatch<any>(getCharacters()).then((callback: () => void) => {
+      callback = () => expect(store.getActions()).toEqual([expectedAction]);
     });
   });
 });

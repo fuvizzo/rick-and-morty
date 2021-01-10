@@ -29,7 +29,6 @@ const signOut = (): AppThunk => async (dispatch) => {
     await axios.post(`${SERVICE_URL}/sign-out`, null, {
       withCredentials: true,
     });
-
     dispatch(AuthActions.signOut());
   }, dispatch);
 };
@@ -38,10 +37,11 @@ const getNewAccessToken = (renewateSilently = false): AppThunk => async (dispatc
   buildRequestAndDispatchAction(async () => {
     const results: AxiosResponse = await axios.get(`${SERVICE_URL}/token`);
     const authData: IAuth = results.data;
+
     dispatch(renewateSilently
       ? AuthActions.renewateSilentlyAcccessToken(authData)
       : AuthActions.signIn(authData));
-  }, dispatch);
+  }, dispatch, true, false);
 };
 
 export {

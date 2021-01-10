@@ -8,9 +8,10 @@ import { RootState } from '..';
 type AppThunk = ThunkDispatch<CombinedState<RootState>, unknown, Action<string>>
 
 const buildRequestAndDispatchAction = async (
-  callBack: () => void,
+  callBack: () => Promise<void>,
   dispatch: AppThunk,
   skipLoading: boolean = false,
+  showError: boolean = true,
 ): Promise<void> => {
   if (!skipLoading) {
     dispatch(UIActions.toggleLoadingSpinner());
@@ -18,9 +19,11 @@ const buildRequestAndDispatchAction = async (
   try {
     await callBack();
   } catch (error: any) {
-    handleError(error, dispatch);
+    handleError(showError ? error : null, dispatch);
   }
-  dispatch(UIActions.toggleLoadingSpinner());
+  if (!skipLoading) {
+    dispatch(UIActions.toggleLoadingSpinner());
+  }
 };
 
 const handleError = (error: any, dispatch: AppThunk): void => {

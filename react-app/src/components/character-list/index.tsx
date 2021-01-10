@@ -46,7 +46,7 @@ const UserListComponent: React.FC<Props> = (props) => {
     toggleFavorite,
   } = props;
 
-  const toggleFavoriteHandler = (characterId: number) => {
+  const toggleFavoriteHandler = (characterId: number): void => {
     toggleFavorite(characterId);
   };
 
@@ -83,7 +83,7 @@ const UserListComponent: React.FC<Props> = (props) => {
                         ? 'One of my favorite!'
                         : 'Click to mark as Favorite'}
                     </Button>
-                  </CardFooter>{' '}
+                  </CardFooter>
                 </CardContentWrapper>
               </Card>
             </CardWrapper>

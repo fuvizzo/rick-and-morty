@@ -12,6 +12,7 @@ import {
 import * as authActions from '../../store/auth/thunk';
 import { RootState } from '../../store';
 import { IUserSignInData } from '../../store/auth/types';
+import Error from '../error';
 
 const connector = connect(
   (state: RootState) => ({
@@ -95,9 +96,7 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
           <SimpleTextWrapper>
             {loading && 'Loading...please wait...'}
           </SimpleTextWrapper>
-          <SimpleTextWrapper>
-            {error}
-          </SimpleTextWrapper>
+          <Error />
         </FormElemWrapper>
       </form>
       <SimpleLink to="./sign-up">Sign up here!</SimpleLink>

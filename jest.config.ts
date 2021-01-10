@@ -8,6 +8,7 @@ const config: Config.InitialOptions = {
   roots: [
     '<rootDir>/auth-service/src',
     '<rootDir>/character-service/src',
+    '<rootDir>/react-app/src',
   ],
   preset: 'ts-jest',
   // Jest transformations -- this adds support for TypeScript

@@ -24,10 +24,7 @@ const Dashboard: React.FC<PropsFromRedux> = (props) => {
     ui,
     user: {
       userInfo,
-      auth: {
-        tokenExpiration,
-        isAuthenticated,
-      },
+      auth: { tokenExpiration, isAuthenticated },
     },
     characterList,
     getCharacterList,
@@ -39,7 +36,7 @@ const Dashboard: React.FC<PropsFromRedux> = (props) => {
   const setIntervalRef = React.useRef<NodeJS.Timeout>();
   const [nextPageIndex, setNextPageIndex] = React.useState<number>(2);
 
-  const signOutHandler = () => {
+  const signOutHandler = (): void => {
     clearInterval(setIntervalRef.current!);
     signOut();
   };
@@ -60,11 +57,11 @@ const Dashboard: React.FC<PropsFromRedux> = (props) => {
     };
   }, [ui.error]);
 
-  const onScrollHandler = (event: React.UIEvent<HTMLDivElement >) => {
-    const target:HTMLDivElement = event.target as HTMLDivElement;
+  const onScrollHandler = (event: React.UIEvent<HTMLDivElement>): void => {
+    const target: HTMLDivElement = event.target as HTMLDivElement;
     if (
       characterList.info.pages > nextPageIndex
-        && target.scrollHeight - target.scrollTop === target.clientHeight
+      && target.scrollHeight - target.scrollTop === target.clientHeight
     ) {
       getCharacterList(nextPageIndex);
       setNextPageIndex(nextPageIndex + 1);
