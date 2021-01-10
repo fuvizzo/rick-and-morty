@@ -5,6 +5,7 @@ import CharacterList from '../character-list';
 import * as authActions from '../../store/auth/thunk';
 import { signOut as localSignOut } from '../../store/auth/actions';
 import { RootState } from '../../store';
+import { MainHeader, MainHeaderWrapper } from './styles';
 
 const connector = connect(
   (state: RootState) => ({
@@ -15,16 +16,11 @@ const connector = connect(
   { localSignOut, ...authActions },
 );
 
-type PropsFromRedux = ConnectedProps<typeof connector>
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
 const Dashboard: React.FC<PropsFromRedux> = (props) => {
   const {
-    auth,
-    ui,
-    user,
-    signOut,
-    localSignOut,
-    getNewAccessToken,
+    auth, ui, user, signOut, localSignOut, getNewAccessToken,
   } = props;
 
   const setIntervalRef = React.useRef<NodeJS.Timeout>();
@@ -37,22 +33,22 @@ const Dashboard: React.FC<PropsFromRedux> = (props) => {
         getNewAccessToken(true);
       }, auth.tokenExpiration! * 1000 - Date.now());
     }
-
     return () => clearInterval(setIntervalRef.current!);
   }, [ui.error]);
 
   return (
-    <div>
-       {ui.error && <Redirect to="/authentication/sign-in" />}
-      Welcome {user.userInfo!.firstName} {user.userInfo!.lastName}
-      <button
-        data-testid="more-btn"
-        onClick={signOut}
-      >
-        Sign Out
-      </button>
+    <>
+      <MainHeaderWrapper>
+        <MainHeader>
+          {ui.error && <Redirect to="/authentication/sign-in" />}
+          Welcome {user.userInfo!.firstName} {user.userInfo!.lastName}
+          <button data-testid="more-btn" onClick={signOut}>
+            Sign Out
+          </button>
+        </MainHeader>
+      </MainHeaderWrapper>
       <CharacterList />
-    </div>
+    </>
   );
 };
 

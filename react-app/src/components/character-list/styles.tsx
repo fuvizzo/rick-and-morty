@@ -1,16 +1,13 @@
 import styled from 'styled-components';
 
 interface CardProps {
-  url: string
+  url: string;
 }
-const CardWrapper = styled.div`
-  min-height: 300px;
-`;
 
 const GridContainer = styled.div`
   width: 90%;
   max-width: 1240px;
-  margin: 0 auto;
+  margin: 70px auto;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto;
@@ -23,8 +20,13 @@ const GridContainer = styled.div`
   }
 `;
 
+const CardWrapper = styled.div`
+  min-height: 300px;
+`;
+
 const Card = styled.a`
   background: white;
+  border-radius: 10px ;
   text-decoration: none;
   color: #444;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -65,9 +67,10 @@ const CardSpan = styled.span`
 
 const CardImage = styled.div`
   padding-bottom: 60%;
+  border-radius: 10px 10px 0 0;
   background-size: cover;
   background-position: center center;
-  background-image: url(${(props:CardProps) => props.url});
+  background-image: url(${(props: CardProps) => props.url});
 `;
 
 export {
