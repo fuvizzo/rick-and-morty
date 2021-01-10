@@ -7,7 +7,14 @@ import * as uiActions from '../../store/ui/actions';
 import { ICharacterData } from '../../store/characters/types';
 import { RootState } from '../../store';
 import {
-  GridContainer, Card,
+  GridContainer,
+  Card,
+  CardWrapper,
+  CardHeader,
+  CardParagraph,
+  CardArticle,
+  CardSpan,
+  CardImage,
 } from './styles';
 
 const connector = connect(
@@ -21,7 +28,7 @@ const connector = connect(
   },
 );
 
-type PropsFromRedux = ConnectedProps<typeof connector>
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
 export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
   const {
@@ -42,25 +49,32 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
     getCharacters(page);
   }, []);
 
-  return <GridContainer>
-    {Object.keys(characters).map((characterId: string) => {
-      const data: ICharacterData = characters[characterId];
-
-      return (
-        <Card key={characterId}>
-          {characterId}
-          {data.name}
-          {data.favorite && 'Is Favorite'}
-        </Card>
-      );
-    })}
-    <button
-        data-testid="more-btn"
-        onClick={() => showMoreHandler(1)}
-      >
-      Show more
+  return (
+    <GridContainer>
+      {Object.keys(characters).map((characterId: string) => {
+        const data: ICharacterData = characters[characterId];
+        return (
+          <CardWrapper key={characterId}>
+            <Card>
+             <CardImage url={data.image}/>
+              <CardArticle>
+                <CardHeader> {data.name}</CardHeader>
+                <CardParagraph>
+                  <CardSpan>
+                    {characterId}
+                    {data.favorite && 'Is Favorite'}
+                  </CardSpan>
+                </CardParagraph>
+              </CardArticle>
+            </Card>
+          </CardWrapper>
+        );
+      })}
+      <button data-testid="more-btn" onClick={() => showMoreHandler(1)}>
+        Show more
       </button>
-  </GridContainer>;
+    </GridContainer>
+  );
 };
 
 export default connector(UserListComponent);
