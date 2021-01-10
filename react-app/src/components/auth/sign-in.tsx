@@ -42,6 +42,7 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
     setError,
     user: {
       auth: {
+        userId,
         isAuthenticated,
       },
     },
@@ -51,11 +52,11 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
     },
   } = props;
 
-  /* React.useEffect(() => {
-    if (!isAuthenticated) {
+  React.useEffect(() => {
+    if (!(isAuthenticated || userId)) {
       getNewAccessToken();
     }
-  }, [isAuthenticated]); */
+  }, [isAuthenticated]);
 
   const handleUserData = (e: React.FormEvent<HTMLInputElement>): void => {
     setUserLoginData({

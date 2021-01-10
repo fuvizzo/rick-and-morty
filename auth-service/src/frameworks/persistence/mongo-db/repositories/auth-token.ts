@@ -17,7 +17,7 @@ class MongoDbAuthTokenRepository implements IMongoDbAuthTokenRepository {
       jwt.sign(authTokenBody,
         process.env.ACCESS_TOKEN_SECRET as string,
         {
-          expiresIn: '10s', // process.env.ACCESS_TOKEN_EXPIRATION_TIME,
+          expiresIn: '5s', // process.env.ACCESS_TOKEN_EXPIRATION_TIME,
         })
     ),
   }

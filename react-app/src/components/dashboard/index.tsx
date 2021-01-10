@@ -52,8 +52,8 @@ const Dashboard: React.FC<PropsFromRedux> = (props) => {
         setIntervalRef.current = setInterval(() => {
           getNewAccessToken(true);
         }, tokenExpiration! * 1000 - Date.now());
+        getCharacterList();
       }
-      getCharacterList();
     }
     return () => {
       clearInterval(setIntervalRef.current!);
