@@ -6,7 +6,7 @@ import * as authActions from '../../store/auth/thunk';
 import { getCharacters as getCharacterList } from '../../store/characters/thunk';
 import { signOut as localSignOut } from '../../store/auth/actions';
 import { RootState } from '../../store';
-import { Container, MainHeader, MainHeaderWrapper } from './styles';
+import { DashboardContainer, MainHeader, MainHeaderWrapper } from './styles';
 
 const connector = connect(
   (state: RootState) => ({
@@ -72,17 +72,17 @@ const Dashboard: React.FC<PropsFromRedux> = (props) => {
   };
 
   return (
-    <Container onScroll={onScrollHandler}>
+    <DashboardContainer onScroll={onScrollHandler}>
       <MainHeaderWrapper>
         <MainHeader>
-          Welcome {userInfo!.firstName} {userInfo!.lastName}
+          Welcome... {userInfo!.firstName} {userInfo!.lastName}!
           <button data-testid="sign-out" onClick={signOutHandler}>
             Sign Out
           </button>
         </MainHeader>
       </MainHeaderWrapper>
       <CharacterList data={characterList} />
-    </Container>
+    </DashboardContainer>
   );
 };
 

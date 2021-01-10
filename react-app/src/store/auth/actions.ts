@@ -6,6 +6,11 @@ const signIn = (authData: IAuth): AuthActionTypes => ({
   payload: authData,
 });
 
+const signUp = (authData: IAuth): AuthActionTypes => ({
+  type: AuthActions.SIGN_IN,
+  payload: authData,
+});
+
 const signOut = (): AuthActionTypes => ({
   type: AuthActions.SIGN_OUT,
 });

@@ -4,16 +4,21 @@ import * as AuthActions from './actions';
 import buildRequestAndDispatchAction from '../helpers';
 
 import { AppThunk } from '..';
-import { IAuth } from './types';
+import { IAuth, IUserSignInData, IUserSignUpData } from './types';
 
 const SERVICE_URL: string = '/auth-service-api';
 
-const signInWithEmailAndPassword = (email: string, password:string): AppThunk => async (dispatch) => {
+const signInWithEmailAndPassword = (signInData:IUserSignInData): AppThunk => async (dispatch) => {
   buildRequestAndDispatchAction(async () => {
-    const results: AxiosResponse = await axios.post(`${SERVICE_URL}/sign-in`, {
-      email,
-      password,
-    });
+    const results: AxiosResponse = await axios.post(`${SERVICE_URL}/sign-in`, signInData);
+    const authData: IAuth = results.data;
+    dispatch(AuthActions.signIn(authData));
+  }, dispatch);
+};
+
+const signUp = (signUpData:IUserSignUpData): AppThunk => async (dispatch) => {
+  buildRequestAndDispatchAction(async () => {
+    const results: AxiosResponse = await axios.post(`${SERVICE_URL}/sign-up`, signUpData);
     const authData: IAuth = results.data;
     dispatch(AuthActions.signIn(authData));
   }, dispatch);
@@ -42,5 +47,6 @@ const getNewAccessToken = (renewateSilently = false): AppThunk => async (dispatc
 export {
   signInWithEmailAndPassword,
   signOut,
+  signUp,
   getNewAccessToken,
 };

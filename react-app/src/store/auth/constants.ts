@@ -1,3 +1,4 @@
 export const SIGN_IN = '@@AUTH/SIGN_IN';
+export const SIGN_UP = '@@AUTH/SIGN_UP';
 export const SIGN_OUT = '@@AUTH/SIGN_OUT';
 export const RENEWATE_SILENTLY_ACCESS_TOKEN = '@@AUTH/RENEWATE_SILENTLY_ACCESS_TOKEN';

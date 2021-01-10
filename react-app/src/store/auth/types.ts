@@ -17,12 +17,24 @@ export interface IUser {
   userInfo?: IUserData
 }
 
+export interface IUserSignInData {
+  email: string
+  password: string
+}
+
+export interface IUserSignUpData extends IUserSignInData, IUserData { }
+
 interface SignIn {
   type: typeof AuthActions.SIGN_IN
   payload: IAuth
 }
 
-interface renewateSilentlyAcccessToken {
+interface SignUp {
+  type: typeof AuthActions.SIGN_UP
+  payload: IAuth
+}
+
+interface RenewateSilentlyAcccessToken {
   type: typeof AuthActions.RENEWATE_SILENTLY_ACCESS_TOKEN
   payload: IAuth
 }
@@ -31,4 +43,7 @@ interface SignOut {
   type: typeof AuthActions.SIGN_OUT
 }
 
-export type AuthActionTypes = SignIn | SignOut | renewateSilentlyAcccessToken;
+export type AuthActionTypes = SignIn
+  | SignOut
+  | SignUp
+  | RenewateSilentlyAcccessToken;

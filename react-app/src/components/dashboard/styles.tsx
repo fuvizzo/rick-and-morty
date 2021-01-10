@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Container = styled.div`
+const DashboardContainer = styled.div`
   overflow-y: scroll;
   height: 600px;
 `;
@@ -25,4 +25,4 @@ const MainHeader = styled.div`
   justify-content: space-between;
 `;
 
-export { Container, MainHeader, MainHeaderWrapper };
+export { DashboardContainer, MainHeader, MainHeaderWrapper };

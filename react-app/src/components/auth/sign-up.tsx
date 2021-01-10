@@ -11,7 +11,7 @@ import {
 } from '../common-styles';
 import * as authActions from '../../store/auth/thunk';
 import { RootState } from '../../store';
-import { IUserSignInData } from '../../store/auth/types';
+import { IUserSignUpData } from '../../store/auth/types';
 
 const connector = connect(
   (state: RootState) => ({
@@ -27,17 +27,17 @@ const connector = connect(
 type PropsFromRedux = ConnectedProps<typeof connector>
 
 export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
-  const [userSignInData, setUserSignInData] = React.useState<IUserSignInData>({
+  const [userSignData, setUserSignUpData] = React.useState<IUserSignUpData>({
     email: '',
     password: '',
+    firstName: '',
+    lastName: '',
   });
   const {
-    getNewAccessToken,
-    signInWithEmailAndPassword,
+    signUp,
     setError,
     user: {
       auth: {
-        userId,
         isAuthenticated,
       },
     },
@@ -47,37 +47,49 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
     },
   } = props;
 
-  React.useEffect(() => {
-    if (!(isAuthenticated || userId)) {
-      getNewAccessToken();
-    }
-  }, [isAuthenticated]);
-
   const handleUserData = (e: React.FormEvent<HTMLInputElement>): void => {
-    setUserSignInData({
-      ...userSignInData,
+    setUserSignUpData({
+      ...userSignData,
       [e.currentTarget.name]: e.currentTarget.value,
     });
   };
 
-  const signInHandler = (event: React.FormEvent<HTMLFormElement>): void => {
+  const signUpHandler = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     if (error) {
       setError(null);
     }
-    signInWithEmailAndPassword(userSignInData);
+    signUp(userSignData);
   };
 
   return (
     <>
-      {isAuthenticated && <Redirect to="/dashboard"/>}
-      <form onSubmit={signInHandler}>
+      {isAuthenticated && <Redirect to="/dashboard" />}
+      <form onSubmit={signUpHandler}>
+         <FormElemWrapper>
+          <Input
+            type="text"
+            name="firstName"
+            placeholder="firstName"
+            value={userSignData.firstName}
+            onChange={handleUserData}
+          />
+        </FormElemWrapper>
+        <FormElemWrapper>
+          <Input
+            type="text"
+            name="lastName"
+            placeholder="lastName"
+            value={userSignData.lastName}
+            onChange={handleUserData}
+          />
+        </FormElemWrapper>
         <FormElemWrapper>
           <Input
             type="text"
             name="email"
             placeholder="email"
-            value={userSignInData.email}
+            value={userSignData.email}
             onChange={handleUserData}
           />
         </FormElemWrapper>
@@ -86,21 +98,21 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
             type="password"
             name="password"
             placeholder="password"
-            value={userSignInData.password}
+            value={userSignData.password}
             onChange={handleUserData}
           />
         </FormElemWrapper>
         <FormElemWrapper>
-          <Button data-testid="more-btn">Sign In</Button>
+          <Button data-testid="more-btn">Sign Up</Button>
           <SimpleTextWrapper>
-            {loading && 'Loading...please wait...'}
+            {loading && 'Signing up...please wait...'}
           </SimpleTextWrapper>
           <SimpleTextWrapper>
             {error}
           </SimpleTextWrapper>
         </FormElemWrapper>
       </form>
-      <SimpleLink to="./sign-up">Sign up here!</SimpleLink>
+      <SimpleLink to="./sign-in">Already registered? Sign in then!</SimpleLink>
     </>
   );
 };

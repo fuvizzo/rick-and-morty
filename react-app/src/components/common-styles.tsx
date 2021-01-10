@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 interface ButtonProps {
   width?: string;
@@ -6,9 +7,9 @@ interface ButtonProps {
 }
 
 const Title = styled.h1`
-  font-size: 1.5em;
-  text-align: center;
-  color: palevioletred;
+ font-size: 3.5em;
+    text-align: center;
+    
 `;
 const FormElemWrapper = styled.div`
   margin: 0.5em;
@@ -21,6 +22,7 @@ const Container = styled.div`
   margin: 0;
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
 `;
 
@@ -48,9 +50,19 @@ const Button = styled.button`
   color: #fff;
 `;
 
+const SimpleTextWrapper = styled.span`
+  color: #fff; 
+`;
+
+const SimpleLink = styled(Link)`
+  color: #fff; 
+`;
+
 export {
   Title,
   FormElemWrapper,
+  SimpleTextWrapper,
+  SimpleLink,
   Input,
   Button,
   Container,
