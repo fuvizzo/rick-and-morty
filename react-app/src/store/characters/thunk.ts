@@ -30,21 +30,24 @@ const getCharacters = (page?: number): AppThunk => async (dispatch, getState) =>
   }, dispatch);
 };
 
-const toggleFavorite = (characterId: string)
+const toggleFavorite = (characterId: number)
   : AppThunk => async (dispatch, getState) => {
   buildRequestAndDispatchAction(async () => {
     const {
-      characterList: {
-        results,
+      user: {
+        auth: {
+          userId,
+          accessToken,
+        },
       },
-
     } = getState();
-    const character = { ...results[characterId] };
-    if (character) {
-      character.favorite = !character.favorite;
-    }
 
-    await axios.patch(`${URL}/characters`, character);
+    await axios.put(`${SERVICE_URL}/characters/favorites/${userId}`, { characterId },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
     dispatch(CharacterListActions.toggleFavorite(characterId));
   }, dispatch);
 };
@@ -52,7 +55,7 @@ const toggleFavorite = (characterId: string)
 const getFilteredCharacters = (): AppThunk => async (dispatch, getState) => {
   buildRequestAndDispatchAction(async () => {
     const { query } = getState().ui.search;
-    const results: AxiosResponse = await axios.get(`${URL}/characters?q=${query}`);
+    const results: AxiosResponse = await axios.get(`${SERVICE_URL}/characters?q=${query}`);
     const characters: ICharacterHash = results.data;
     dispatch(CharacterListActions.getFilteredCharacters(characters));
   }, dispatch, true);

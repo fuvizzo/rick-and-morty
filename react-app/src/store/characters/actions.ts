@@ -14,7 +14,7 @@ const getFilteredCharacters = (results: ICharacterHash): CharacterListActionType
   payload: results,
 });
 
-const toggleFavorite = (characterId: string): CharacterListActionTypes => ({
+const toggleFavorite = (characterId: number): CharacterListActionTypes => ({
   type: UserActions.TOGGLE_FAVORITE,
   payload: { characterId },
 });

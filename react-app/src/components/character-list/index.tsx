@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-
-// import User from './user-record';
 import * as characterListActions from '../../store/characters/thunk';
 import * as uiActions from '../../store/ui/actions';
-import { ICharacterData } from '../../store/characters/types';
+import { ICharacterData, ICharacterList } from '../../store/characters/types';
 import { RootState } from '../../store';
 import {
   GridContainer,
@@ -15,7 +13,10 @@ import {
   CardArticle,
   CardSpan,
   CardImage,
+  CardFooter,
+  CardContentWrapper,
 } from './styles';
+import { Button } from '../common-styles';
 
 const connector = connect(
   (state: RootState) => ({
@@ -31,51 +32,65 @@ const connector = connect(
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
+interface Props extends PropsFromRedux {
+  data: ICharacterList;
+}
+
+const UserListComponent: React.FC<Props> = (props) => {
+  const [nextPageIndex, setNextPageIndex] = React.useState<number>(2);
   const {
-    getCharacters,
+    data: { results },
+    query,
     getFilteredCharacters,
     triggerCharacterSearch,
     toggleFavorite,
-    results: characters,
-    accessToken,
-    info,
-    query,
   } = props;
 
-  React.useEffect(() => {
-    getCharacters();
-  }, []);
-
-  const showMoreHandler = React.useCallback((page: number) => {
-    getCharacters(page);
-  }, [accessToken]);
+  const toggleFavoriteHandler = (characterId: number) => {
+    toggleFavorite(characterId);
+  };
 
   return (
-    <GridContainer>
-      {Object.keys(characters).map((characterId: string) => {
-        const data: ICharacterData = characters[characterId];
-        return (
-          <CardWrapper key={characterId}>
-            <Card>
-             <CardImage url={data.image}/>
-              <CardArticle>
-                <CardHeader> {data.name}</CardHeader>
-                <CardParagraph>
-                  <CardSpan>
-                    {characterId}
-                    {data.favorite && 'Is Favorite'}
-                  </CardSpan>
-                </CardParagraph>
-              </CardArticle>
-            </Card>
-          </CardWrapper>
-        );
-      })}
-      <button data-testid="more-btn" onClick={() => showMoreHandler(2)}>
-        Show more
-      </button>
-    </GridContainer>
+    <>
+      <GridContainer>
+        {Object.keys(results).map((key: string) => {
+          const data: ICharacterData = results[key];
+          const characterId: number = Number(key);
+          return (
+            <CardWrapper key={characterId}>
+              <Card>
+                <CardImage url={data.image} />
+                <CardContentWrapper>
+                  <CardArticle>
+                    <CardHeader> {data.name}</CardHeader>
+                    <CardParagraph>
+                      Gender: <CardSpan>{data.gender}</CardSpan>
+                    </CardParagraph>
+                    <CardParagraph>
+                      Species: <CardSpan>{data.species}</CardSpan>
+                    </CardParagraph>
+                    <CardParagraph>
+                      Status: <CardSpan>{data.status}</CardSpan>
+                    </CardParagraph>
+                  </CardArticle>
+                  <CardFooter>
+                    <Button
+                      onClick={() => toggleFavoriteHandler(characterId)}
+                      width="130px"
+                      height="30px"
+                    >
+                      {data.favorite
+                        ? 'One of my favorite!'
+                        : 'Click to mark as Favorite'}
+                    </Button>
+                  </CardFooter>{' '}
+                </CardContentWrapper>
+              </Card>
+            </CardWrapper>
+          );
+        })}
+      </GridContainer>
+    </>
   );
 };
 

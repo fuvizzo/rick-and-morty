@@ -4,6 +4,7 @@ export interface IAuth {
   isAuthenticated: boolean
   tokenExpiration?: number
   accessToken?: string
+  userId?: string
 }
 
 export interface IUserData {

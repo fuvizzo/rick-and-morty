@@ -34,6 +34,11 @@ const configuration: Configuration = {
           'file-loader',
         ],
       },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        loader: 'file-loader',
+        // options: { outputPath: 'assets/fonts', publicPath: '../fonts', useRelativePaths: true },
+      },
     ],
   },
   plugins: [

@@ -52,7 +52,26 @@ table {
 	border-spacing: 0;
 }
 
+@font-face {
+  font-family: 'Amatic';   
+  src: url('./assets/fonts/Amatic-Bold.ttf') format('truetype'),
+       url('./assets/fonts/AmaticSC-Regular.ttf') format('truetype');
+}
+ 
+ 
+html, body {
+	font-family: 'Amatic', sans-serif;
+	background: rgb(36, 40, 47);
+	font-size: 16px;
+	letter-spacing: 1px;
+}
+
+html, body, input, button {
+	font-family: 'Amatic', sans-serif;
+	letter-spacing: 1px;
+}
+
+
 html, body, #root {
 	height: 100%;
-	background: rgb(36, 40, 47);
 }

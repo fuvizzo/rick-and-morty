@@ -48,7 +48,7 @@ interface GetFilterdCharacters {
 interface ToggleFavorite {
   type: typeof CharacterActions.TOGGLE_FAVORITE
   payload: {
-    characterId: string
+    characterId: number
   }
 }
 
