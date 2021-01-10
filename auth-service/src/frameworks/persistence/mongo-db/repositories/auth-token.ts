@@ -8,7 +8,7 @@ export type IMongoDbAuthTokenRepository = IAuthTokenRepository;
 class MongoDbAuthTokenRepository implements IMongoDbAuthTokenRepository {
   refreshTokenModel: IMongoRefreshToken;
 
-  constructor({ refreshTokenModel }:{refreshTokenModel:IMongoRefreshToken}) {
+  constructor({ refreshTokenModel }: { refreshTokenModel: IMongoRefreshToken }) {
     this.refreshTokenModel = refreshTokenModel;
   }
 
@@ -17,7 +17,7 @@ class MongoDbAuthTokenRepository implements IMongoDbAuthTokenRepository {
       jwt.sign(authTokenBody,
         process.env.ACCESS_TOKEN_SECRET as string,
         {
-          expiresIn: process.env.ACCESS_TOKEN_EXPIRATION_TIME,
+          expiresIn: '10s', // process.env.ACCESS_TOKEN_EXPIRATION_TIME,
         })
     ),
   }
@@ -27,29 +27,48 @@ class MongoDbAuthTokenRepository implements IMongoDbAuthTokenRepository {
       const refreshToken = jwt.sign(
         authTokenBody,
         process.env.REFRESH_TOKEN_SECRET as string,
-
       );
-      const Model = this.refreshTokenModel;
-      await new Model({ value: refreshToken }).save();
+
+      await this.refreshTokenModel.findOneAndUpdate({
+        userName: authTokenBody.userName,
+      }, {
+        userName: authTokenBody.userName,
+        value: refreshToken,
+      }, {
+        useFindAndModify: false,
+        new: true,
+        upsert: true,
+      });
+
       return refreshToken;
     },
     delete: async (token: string): Promise<boolean> => {
-      const deletedToken = await this.refreshTokenModel.findOneAndDelete({ value: token });
-      return !!deletedToken;
+      try {
+        const authTokenBody = jwt.verify(
+          token,
+          process.env.REFRESH_TOKEN_SECRET as string,
+        ) as IAuthTokenBody;
+        const deletedToken = await this.refreshTokenModel.findOneAndDelete({
+          userName: authTokenBody.userName,
+        });
+        return !!deletedToken;
+      } catch (err) {
+        return false;
+      }
     },
     verify: async (token: string): Promise<IAuthTokenBody | null> => {
-      const tokenExists = await this.refreshTokenModel.exists({ value: token });
-      if (tokenExists) {
-        try {
-          return jwt.verify(
-            token,
-            process.env.REFRESH_TOKEN_SECRET as string,
-          ) as IAuthTokenBody;
-        } catch (err) {
-          return null;
-        }
+      try {
+        const authTokenBody = jwt.verify(
+          token,
+          process.env.REFRESH_TOKEN_SECRET as string,
+        ) as IAuthTokenBody;
+        const itExists = await this.refreshTokenModel.exists({
+          userName: authTokenBody.userName,
+        });
+        return itExists ? authTokenBody : null;
+      } catch (err) {
+        return null;
       }
-      return null;
     },
   }
 }

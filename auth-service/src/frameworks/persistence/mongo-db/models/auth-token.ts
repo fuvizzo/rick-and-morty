@@ -5,9 +5,17 @@ import {
   Document,
 } from 'mongoose';
 
-const refreshTokenSchema: Schema = new Schema({ value: { type: String } });
+export interface IMongoDbRefreshTokenDocument extends Document {
+  userName: string
+  value: string
+}
 
-const MongoRefreshToken: Model<Document> = model('RefreshToken', refreshTokenSchema);
+const refreshTokenSchema: Schema = new Schema({
+  userName: { type: String, required: true },
+  value: { type: String, required: true },
+});
+
+const MongoRefreshToken: Model<IMongoDbRefreshTokenDocument> = model('RefreshToken', refreshTokenSchema);
 
 export type IMongoRefreshToken = typeof MongoRefreshToken;
 

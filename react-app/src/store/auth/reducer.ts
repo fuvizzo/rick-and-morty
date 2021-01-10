@@ -32,6 +32,7 @@ const AuthReducer: Reducer<IUser, AuthActionTypes> = produce(
           exp: tokenExpiration,
         } = parseAccessTokenPayload(action.payload.accessToken!);
         draft.auth.tokenExpiration = tokenExpiration;
+
         draft.userInfo = { firstName, lastName };
         draft.auth.accessToken = action.payload.accessToken;
         draft.auth.isAuthenticated = true;
@@ -46,7 +47,7 @@ const AuthReducer: Reducer<IUser, AuthActionTypes> = produce(
       case AuthActions.RENEWATE_SILENTLY_ACCESS_TOKEN: {
         const { exp: tokenExpiration } = parseAccessTokenPayload(action.payload.accessToken!);
         draft.auth.tokenExpiration = tokenExpiration;
-        draft.auth.tokenExpiration = tokenExpiration;
+
         draft.auth.accessToken = action.payload.accessToken;
         break;
       }

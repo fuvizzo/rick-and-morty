@@ -12,6 +12,6 @@ export interface IAccountService<T> {
 export interface IAuthTokenService {
   createAccessToken: (tokenBody: IAuthTokenBody) => string
   createRefreshToken: (tokenBody: IAuthTokenBody) => Promise<string>
-  deleteRefreshToken: (token: string) => Promise<boolean>
+  deleteRefreshToken: (userName: string) => Promise<boolean>
   verifyRefreshToken: (token: string) => Promise<IAuthTokenBody | null>
 }

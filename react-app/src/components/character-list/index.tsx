@@ -21,6 +21,7 @@ const connector = connect(
   (state: RootState) => ({
     ...state.characterList,
     ...state.ui.search,
+    accessToken: state.user.auth.accessToken,
   }),
   {
     ...characterListActions,
@@ -37,6 +38,7 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
     triggerCharacterSearch,
     toggleFavorite,
     results: characters,
+    accessToken,
     info,
     query,
   } = props;
@@ -47,7 +49,7 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
 
   const showMoreHandler = React.useCallback((page: number) => {
     getCharacters(page);
-  }, []);
+  }, [accessToken]);
 
   return (
     <GridContainer>
@@ -70,7 +72,7 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
           </CardWrapper>
         );
       })}
-      <button data-testid="more-btn" onClick={() => showMoreHandler(1)}>
+      <button data-testid="more-btn" onClick={() => showMoreHandler(2)}>
         Show more
       </button>
     </GridContainer>

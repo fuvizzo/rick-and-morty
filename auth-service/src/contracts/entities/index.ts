@@ -23,4 +23,5 @@ export interface IAuthTokenBody extends IBasicInfo {
   userId: string
   userName: string,
   roles: RoleType[]
+  iat?: number
 }

@@ -20,29 +20,45 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 const Dashboard: React.FC<PropsFromRedux> = (props) => {
   const {
-    auth, ui, user, signOut, localSignOut, getNewAccessToken,
+    auth: {
+      tokenExpiration,
+      isAuthenticated,
+    },
+    ui,
+    user,
+    signOut,
+    localSignOut,
+    getNewAccessToken,
   } = props;
 
   const setIntervalRef = React.useRef<NodeJS.Timeout>();
 
+  const signOutHandler = () => {
+    clearInterval(setIntervalRef.current!);
+    signOut();
+  };
+
   React.useEffect(() => {
-    if (ui.error) {
-      localSignOut();
-    } else {
-      setIntervalRef.current = setInterval(() => {
-        getNewAccessToken(true);
-      }, auth.tokenExpiration! * 1000 - Date.now());
+    if (isAuthenticated) {
+      if (ui.error) {
+        // localSignOut();
+      } else {
+        setIntervalRef.current = setInterval(() => {
+          getNewAccessToken(true);
+        }, tokenExpiration! * 1000 - Date.now());
+      }
     }
-    return () => clearInterval(setIntervalRef.current!);
+    return () => {
+      clearInterval(setIntervalRef.current!);
+    };
   }, [ui.error]);
 
   return (
     <>
       <MainHeaderWrapper>
         <MainHeader>
-          {ui.error && <Redirect to="/authentication/sign-in" />}
           Welcome {user.userInfo!.firstName} {user.userInfo!.lastName}
-          <button data-testid="more-btn" onClick={signOut}>
+          <button data-testid="more-btn" onClick={signOutHandler}>
             Sign Out
           </button>
         </MainHeader>

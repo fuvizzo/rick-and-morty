@@ -11,26 +11,13 @@ import {
   IAuthTokenBody,
   IBasicInfo,
   IUserAccount,
+  RoleType,
 } from '../contracts/entities';
 import { IAccountService, IAuthTokenService } from '../contracts/services';
 import AppError from '../error/app-error';
 import IAuthController from '../contracts/controllers';
 
 const debug = Debug('auth-controller');
-
-const createAuthCookie = (res: Response,
-
-  refreshToken: string): void => {
-  res.cookie('refresh-token',
-    refreshToken,
-    {
-      domain: 'auth-service',
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-      maxAge: Number(process.env.AUTH_COOKIE_MAX_AGE),
-      httpOnly: true,
-    });
-};
 
 class AuthController implements IAuthController {
   accountService: IAccountService<string>;
@@ -44,6 +31,33 @@ class AuthController implements IAuthController {
     this.accountService = accountService;
     this.authTokenService = authTokenService;
   }
+
+  setAuthResponse = async (
+    res: Response,
+    authTokenBody: IAuthTokenBody,
+    statusCode?: number,
+  ): Promise<void> => {
+    const accessToken: string = this.authTokenService.createAccessToken(authTokenBody);
+    const refreshToken: string = await this.authTokenService.createRefreshToken(authTokenBody);
+    const segs: string[] = accessToken!.split('.');
+    const body = JSON.parse(Buffer.from(segs[1], 'base64').toString());
+
+    res.cookie('refresh-token',
+      refreshToken,
+      {
+        domain: 'auth-service',
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+        maxAge: Number(process.env.AUTH_COOKIE_MAX_AGE),
+        httpOnly: true,
+      });
+    if (statusCode) {
+      res.status(statusCode);
+    }
+    res.json({
+      accessToken,
+    });
+  };
 
   signUp = async (
     req: Request,
@@ -78,14 +92,7 @@ class AuthController implements IAuthController {
           lastName,
           roles: account.roles!,
         };
-
-        const accessToken: string = this.authTokenService.createAccessToken(authTokenBody);
-        const refreshToken: string = await this.authTokenService.createRefreshToken(authTokenBody);
-        createAuthCookie(res, refreshToken);
-        res.status(201);
-        res.json({
-          accessToken,
-        });
+        await this.setAuthResponse(res, authTokenBody, 201);
       }
     }
   };
@@ -113,13 +120,7 @@ class AuthController implements IAuthController {
           firstName: userAccount.firstName,
           lastName: userAccount.lastName,
         };
-        const accessToken: string = this.authTokenService.createAccessToken(authTokenBody);
-        const refreshToken: string = await this.authTokenService.createRefreshToken(authTokenBody);
-        createAuthCookie(res, refreshToken);
-
-        res.json({
-          accessToken,
-        });
+        await this.setAuthResponse(res, authTokenBody);
       } else {
         next(new AppError('Username or password incorrect', 401));
       }
@@ -132,18 +133,17 @@ class AuthController implements IAuthController {
     next: NextFunction,
   ): Promise<void> => {
     const token = req.cookies['refresh-token'];
+
     const { error } = RefreshTokenSchema.validate(token);
     if (error) {
       next(new AppError('No refresh token provided', 401));
     } else {
-      const refreshTokenBody: IAuthTokenBody | null = await this.authTokenService.verifyRefreshToken(token);
-      if (!refreshTokenBody) {
+      const authTokenBody: IAuthTokenBody | null = await this.authTokenService.verifyRefreshToken(token);
+      delete authTokenBody?.iat;
+      if (!authTokenBody) {
         next(new AppError('Invalid refresh token', 403));
       } else {
-        const accessToken = this.authTokenService.createAccessToken(refreshTokenBody);
-        res.json({
-          accessToken,
-        });
+        await this.setAuthResponse(res, authTokenBody);
       }
     }
   }

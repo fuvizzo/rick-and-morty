@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { setError } from '../../store/ui/actions';
 import {
   Title,
@@ -35,6 +35,7 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
     email: 'fulvio.cusimano@hotmail.com',
     password: 'password',
   });
+  const history = useHistory();
   const {
     getNewAccessToken,
     signInWithEmailAndPassword,
@@ -50,11 +51,11 @@ export const UserListComponent: React.FC<PropsFromRedux> = (props) => {
     },
   } = props;
 
-  React.useEffect(() => {
+  /* React.useEffect(() => {
     if (!isAuthenticated) {
       getNewAccessToken();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated]); */
 
   const handleUserData = (e: React.FormEvent<HTMLInputElement>): void => {
     setUserLoginData({
