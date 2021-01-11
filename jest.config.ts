@@ -14,19 +14,19 @@ const config: Config.InitialOptions = {
   // Jest transformations -- this adds support for TypeScript
   // using ts-jest
   transform: {
-    '^.+\\.ts?$': 'ts-jest',
+    '^.+\\.(ts|tsx)?$': 'ts-jest',
   },
   testEnvironment: 'node',
   modulePathIgnorePatterns: [
     '.*__mocks__.*',
   ],
   setupFiles: [
-    // 'dotenv/config',
     '<rootDir>/test-setup.js',
   ],
-  /*   setupFilesAfterEnv: [
-    '<rootDir>/test-setup.js',
-  ], */
+  setupFilesAfterEnv: [
+    '@testing-library/react/cleanup-after-each',
+    '@testing-library/jest-dom/extend-expect',
+  ],
   coveragePathIgnorePatterns: [
     '/node_modules/',
   ],
@@ -36,10 +36,10 @@ const config: Config.InitialOptions = {
   // Test spec file resolution pattern
   // Matches parent folder `__tests__` and filename
   // should contain `test` or `spec`.
-  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.ts?$',
+  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(ts|tsx)?$',
 
   // Module file extensions for importing
-  moduleFileExtensions: ['ts', 'js', 'json', 'node'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   coverageThreshold: {
     global: {
       statements: 50,

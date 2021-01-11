@@ -1,8 +1,9 @@
 import path from 'path';
-import { Configuration as WebpackConfiguration } from 'webpack';
+import { Configuration as WebpackConfiguration, DefinePlugin } from 'webpack';
 import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
 import { merge } from 'webpack-merge';
 import common from './webpack.common';
+import dotenv from 'dotenv'
 
 interface Configuration extends WebpackConfiguration {
   devServer?: WebpackDevServerConfiguration
@@ -11,7 +12,11 @@ interface Configuration extends WebpackConfiguration {
 export default merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
-
+  plugins: [
+    new DefinePlugin({
+      "process.env": JSON.stringify(dotenv.config({ path: __dirname + '/.env' }).parsed)
+    }),
+  ],
   devServer: {
     port: Number(process.env.LISTENING_PORT),
     historyApiFallback: true,
