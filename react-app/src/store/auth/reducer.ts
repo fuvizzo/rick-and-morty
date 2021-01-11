@@ -1,8 +1,8 @@
 import produce from 'immer';
 import { Reducer } from 'redux';
+import atob from 'atob';
 import {
   AuthActionTypes,
-
   IUser,
 } from './types';
 import * as AuthActions from './constants';
@@ -25,6 +25,7 @@ const AuthReducer: Reducer<IUser, AuthActionTypes> = produce(
     action: AuthActionTypes,
   ): void => {
     switch (action.type) {
+      case AuthActions.SIGN_UP:
       case AuthActions.SIGN_IN: {
         const {
           userId,

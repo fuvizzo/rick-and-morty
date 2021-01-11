@@ -39,8 +39,6 @@ class AuthController implements IAuthController {
   ): Promise<void> => {
     const accessToken: string = this.authTokenService.createAccessToken(authTokenBody);
     const refreshToken: string = await this.authTokenService.createRefreshToken(authTokenBody);
-    const segs: string[] = accessToken!.split('.');
-    const body = JSON.parse(Buffer.from(segs[1], 'base64').toString());
 
     res.cookie('refresh-token',
       refreshToken,

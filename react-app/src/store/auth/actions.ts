@@ -23,5 +23,6 @@ const renewateSilentlyAcccessToken = (authData: IAuth): AuthActionTypes => ({
 export {
   signIn,
   signOut,
+  signUp,
   renewateSilentlyAcccessToken,
 };

@@ -1,31 +1,50 @@
 import reducer, { initialState } from '../reducer';
-import * as UserActions from '../constants';
-import jsonData from '../../../../mock/db.json';
+import * as AuthActions from '../constants';
+import { AuthActionTypes, IUser } from '../types';
+import mock from './mock-data';
 
-import { ICurrentUser, CurrentUserActionTypes } from '../types';
+const user : IUser = mock;
 
-const fakeUser: ICurrentUser = {
-  name: 'Foo foo',
-  id: 'c9c2fe64-3de6-4825-b2c2-5d374e48ec67',
-};
-
-describe('CurrentUser reducer', () => {
-  describe('should handle GET_DATA', () => {
-    it('retrieves the current user data', () => {
-      const action: CurrentUserActionTypes = {
-        type: UserActions.GET_DATA,
-        payload: fakeUser,
+describe('Auth reducer', () => {
+  describe('should handle SIGN_IN', () => {
+    it('signs in an User', () => {
+      const action: AuthActionTypes = {
+        type: AuthActions.SIGN_IN,
+        payload: user.auth,
       };
-
       expect(
         reducer(initialState, action),
-      ).toEqual(fakeUser);
+      ).toEqual(user);
     });
 
     it('doesn\'t modifiy the orginal state', () => {
       expect(
-        initialState.id,
-      ).toEqual(0);
+        initialState.auth.isAuthenticated,
+      ).toEqual(false);
+      expect(
+        initialState.userInfo,
+      ).toEqual(undefined);
+    });
+  });
+
+  describe('should handle SIGN_UP', () => {
+    it('signs in an User', () => {
+      const action: AuthActionTypes = {
+        type: AuthActions.SIGN_UP,
+        payload: user.auth,
+      };
+      expect(
+        reducer(initialState, action),
+      ).toEqual(user);
+    });
+
+    it('doesn\'t modifiy the orginal state', () => {
+      expect(
+        initialState.auth.isAuthenticated,
+      ).toEqual(false);
+      expect(
+        initialState.userInfo,
+      ).toEqual(undefined);
     });
   });
 });

@@ -3,12 +3,7 @@ import configureMockStore from 'redux-mock-store';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import thunk, { ThunkDispatch } from 'redux-thunk';
-import * as CharacterActions from '../actions';
-import { initialState } from '../reducer';
-import {
-  GET_CHARACTERS,
-  TOGGLE_FAVORITE,
-} from '../constants';
+import * as CharacterActions from '../constants';
 import {
   getCharacters,
   toggleFavorite,
@@ -26,14 +21,17 @@ type DispatchExts = ThunkDispatch<RootState, undefined, CharacterListActionTypes
 const middlewares = [thunk];
 const mockStore = configureMockStore<RootState, DispatchExts>(middlewares);
 
+const mockAdapter = new MockAdapter(axios);
+
 const store = mockStore();
+
 store.getState().user = {
   auth: {
-    accessToken: 'foo',
+    userId: 'foo',
+    accessToken: 'boo',
     isAuthenticated: true,
   },
 };
-const mockAdapter = new MockAdapter(axios);
 const baseUrl: string = '/character-service-api/characters';
 
 describe('Character list actions', () => {
@@ -42,34 +40,30 @@ describe('Character list actions', () => {
   });
 
   it('should create an action to get character list', () => {
-    mockAdapter.onGet(baseUrl).reply(200, {
-      response: {
-        data: mockedCharacterList,
-      },
-    });
+    mockAdapter.onGet(baseUrl).reply(200, mockedCharacterList);
 
     const expectedAction: CharacterListActionTypes = {
-      type: GET_CHARACTERS,
+      type: CharacterActions.GET_CHARACTERS,
       payload: mockedCharacterList,
     };
 
-    return store.dispatch<any>(getCharacters()).then((callback: () => void) => {
-      callback = () => expect(store.getActions()).toEqual([expectedAction]);
+    return store.dispatch<any>(getCharacters()).then(() => {
+      expect(store.getActions()[1]).toEqual(expectedAction);
     });
   });
 
   it('should create an action to toggle to favorite the character with ID = 1', () => {
-    mockAdapter.onGet(`${baseUrl}/characters/favorites/1`).reply(204);
+    mockAdapter.onPut(`${baseUrl}/favorites/foo`, { characterId: 1 }).reply(204);
 
     const expectedAction: CharacterListActionTypes = {
-      type: TOGGLE_FAVORITE,
+      type: CharacterActions.TOGGLE_FAVORITE,
       payload: {
         characterId: 1,
       },
     };
 
-    return store.dispatch<any>(getCharacters()).then((callback: () => void) => {
-      callback = () => expect(store.getActions()).toEqual([expectedAction]);
+    return store.dispatch<any>(toggleFavorite(1)).then(() => {
+      expect(store.getActions()[1]).toEqual(expectedAction);
     });
   });
 });
