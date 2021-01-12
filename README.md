@@ -3,7 +3,7 @@
 If you are to lazy to read all the stuff I wrote next go directly [here](#the-initsh-script)
 
 ## Project structure
-The project is fully dockerized. I used 3 containers where I spun up the following services:
+The project is fully dockerized. I used **4** containers where I spun up the following services:
 - MongoDb
 - Character service
 - Auth service
