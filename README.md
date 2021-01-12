@@ -1,6 +1,6 @@
 # Rick and Morty
 
-If you are to lazy to read all the stuff I wrote next go directly [here](###The init.sh script)
+If you are to lazy to read all the stuff I wrote next go directly [here](#The)
 
 ## Project structure
 The project is fully dockerized. I used 3 containers where I spun up the following services:
