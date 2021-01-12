@@ -1,17 +1,15 @@
 module.exports = {
-  env: {
-    'cypress/globals': true,
-  },
   extends: [
     '../.eslintrc.js',
-    'react-app',
-    'react-app/jest',
     'plugin:react/recommended',
     'plugin:cypress/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:import/typescript',
   ],
+  env: {
+    'cypress/globals': true,
+  },
   plugins: [
     'react',
     'enzyme',
@@ -23,8 +21,9 @@ module.exports = {
     },
   },
   rules: {
+    'no-console': 'off',
     'react/prop-types': 'off',
-    // 'no-use-before-define': 'off',
+    'no-use-before-define': 'off',
     // 'no-unused-vars': 'off',
     'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.ts'] }],
 

@@ -3,7 +3,7 @@ import * as CharacterActions from '../constants';
 import {
   CharacterListActionTypes, ICharacterList,
 } from '../types';
-import mock from './mock-data';
+import mock from '../../../mocks/character-list';
 
 const mockedCharacterList: ICharacterList = mock;
 

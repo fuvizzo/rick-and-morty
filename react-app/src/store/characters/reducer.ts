@@ -22,7 +22,6 @@ export const initialState: ICharacterList = {
     pages: 0,
     next: '',
   },
-
 };
 
 enablePatches();

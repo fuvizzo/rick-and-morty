@@ -1,6 +1,6 @@
-import { IUser } from '../types';
+import { IUser } from '../store/auth/types';
 
-const mockAuthData:IUser = {
+const mockAuthData: IUser = {
   auth: {
     userId: '5ff8a657f6693c4a3dfcaf0c',
     accessToken: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9

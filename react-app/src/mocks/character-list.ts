@@ -1,6 +1,4 @@
-import {
-  ICharacterList,
-} from '../types';
+import { ICharacterList } from '../store/characters/types';
 
 const mockedCharacterList:ICharacterList = {
   results: {

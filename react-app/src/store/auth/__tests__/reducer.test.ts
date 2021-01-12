@@ -1,7 +1,7 @@
 import reducer, { initialState } from '../reducer';
 import * as AuthActions from '../constants';
 import { AuthActionTypes, IUser } from '../types';
-import mock from './mock-data';
+import mock from '../../../mocks/auth-data';
 
 const user : IUser = mock;
 
