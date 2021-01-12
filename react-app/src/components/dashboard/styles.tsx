@@ -1,8 +1,9 @@
 import styled from 'styled-components';
+import { IComponentProps } from '../common-styles';
 
 const DashboardContainer = styled.div`
   overflow-y: scroll;
-  height: 600px;
+  height: ${(props: IComponentProps) => props.height};
 `;
 
 const MainHeaderWrapper = styled.div`
@@ -19,7 +20,7 @@ const MainHeaderWrapper = styled.div`
 
 const MainHeader = styled.div`
   display: flex;
-  width: 90%;  
+  width: 90%;
   font-size: 1.5em;
   margin: auto;
   justify-content: space-between;
