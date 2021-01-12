@@ -100,7 +100,7 @@ You have to create a **.env** file in the main directory of the project and spec
 - MONGO_INITDB_USERNAME = <*username*>
 - MONGO_INITDB_PASSWORD = <*password*>
 - MONGO_REPLICA_SET_NAME = rs0
-##### Test specific env variables [(Mongodb in-memory server)](# Note)
+##### Test specific env variables [(Mongodb in-memory server)](#Note)
 - MONGOMS_DISABLE_POSTINSTALL=1
 - MONGOMS_SYSTEM_BINARY = ../node_modules/.cache/mongodb-memory-server/mongodb-binaries/<*mongodb binaries version number*>/mongod  
  
