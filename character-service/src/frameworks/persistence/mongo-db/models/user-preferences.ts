@@ -12,7 +12,7 @@ const userPreferencesSchema: Schema = new Schema({
   favoriteCharacterIds: { type: Array },
 });
 
-const MongoUserPreferences: Model<IMongoDbUserPreferencesDocument> = model(
+const MongoUserPreferences: Model<IMongoDbUserPreferencesDocument> = model<IMongoDbUserPreferencesDocument>(
   'UserPreferences',
   userPreferencesSchema,
 );

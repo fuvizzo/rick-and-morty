@@ -17,7 +17,7 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
-    'max-len': ['error', { code: 120 }],
+    'max-len': ['error', { code: 130 }],
     'import/no-extraneous-dependencies': ['off', {
       devDependencies: ['/**/*.test.ts', '/**/*.spec.ts'],
     }],

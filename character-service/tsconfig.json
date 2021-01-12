@@ -9,8 +9,7 @@
     "outDir": "./build",
     "strict": true,
     "esModuleInterop": true,
-    "noEmitOnError": true,
-    "watch": true,
+    "noEmitOnError": true,    
     "noImplicitAny": true,
     "typeRoots": [
       "./@types",

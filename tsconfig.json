@@ -14,9 +14,9 @@
     "noEmitOnError": true,
     "watch": true,
     "noImplicitAny": true,
-    "typeRoots": [
+    /* "typeRoots": [
       "./node_modules/@types"
-    ],
+    ], */
   },
   "exclude": [
     "node_modules"   

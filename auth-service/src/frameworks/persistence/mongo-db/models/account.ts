@@ -43,7 +43,7 @@ async function hashPassword(this:any) {
 
 accountSchema.pre('findOneAndUpdate', hashPassword);
 
-const MongoAccount: Model<IMongoDbAccountDocument> = model('UserAccount', accountSchema);
+const MongoAccount = model<IMongoDbAccountDocument>('UserAccount', accountSchema);
 
 export type IMongoAccountModel = typeof MongoAccount;
 
