@@ -11,8 +11,6 @@ The project is fully dockerized. I used **4** containers where I spun up the fol
 
 Both the auth and character service use the [***jsonwebtoken***](https://www.npmjs.com/package/jsonwebtoken) library to perform authentication/authorization operations.
 
-I referred mainly to this article to go through the jwt library and the way to use it:
-
 ### The auth service
 It's responsible for User authentication. I wrote some basic functionalities here.
 The APIs provided are:
