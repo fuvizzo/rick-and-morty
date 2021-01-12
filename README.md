@@ -172,11 +172,11 @@ In the ***.vscode*** folder there are a bunch of working (and some non working) 
 
 ### Tests
 
-There are both unit and integration tests provided for this project:
+I wrote some test for this project:
 
 - testing framework: **Jest**
 
-Run the following command from the main folder to run all the tests at once (for all the services):
+Run the following command from the main folder to run all the tests at once (for all the services and react):
 ```sh
 $ npm run test:all
 ```
@@ -186,6 +186,13 @@ otherwise you can run tests directly from any service foder by running the follo
 $ npm run test
 $ npm run test:int 
 ```
+or from the react-app by running just:
+```sh
+$ npm run test
+```
+
+###IMPORTANT!
+All he tests on the the auth service, the character service and the react app where carryed out outside the docker containers. If you try to run any from any docker container it will fail
 
 ### Note:
 Since I've used [mongodb-in-memory server](https://www.npmjs.com/package/mongodb-memory-server) to write integration tests for both services and that library is listed among the devDependencies of the package.json in the main folder, the binaries are in the .cache folder of the node_modules directory of the main folder as well. 
@@ -205,5 +212,6 @@ will install all the dependencies and build and run the containers in developmen
 TODO: Description of prod enviroment
 
 # TO-DO
-- more test coverage
+- adding E2E test coverage on the React app by using Cypress 
+- set up tests to run in Docker containers at build time for CI
 - provide swagger (OpenAPI) endpoint definitions
