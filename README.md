@@ -1,4 +1,6 @@
-# Rick and Morty 
+# Rick and Morty
+
+If you are to lazy to read all the stuff I wrote next go directly [here](###The init.sh script)
 
 ## Project structure
 The project is fully dockerized. I used 3 containers where I spun up the following services:
@@ -98,7 +100,7 @@ You have to create a **.env** file in the main directory of the project and spec
 - MONGO_INITDB_USERNAME = <*username*>
 - MONGO_INITDB_PASSWORD = <*password*>
 - MONGO_REPLICA_SET_NAME = rs0
-##### Test specific env variables [(Mongodb in-memory server)](#Note)
+##### Test specific env variables [(Mongodb in-memory server)](# Note)
 - MONGOMS_DISABLE_POSTINSTALL=1
 - MONGOMS_SYSTEM_BINARY = ../node_modules/.cache/mongodb-memory-server/mongodb-binaries/<*mongodb binaries version number*>/mongod  
  
@@ -153,7 +155,7 @@ Remember **always** to run this command from the same folder where the docker-co
 
 One more thing is worth mentioning:
 
-in the _docker-compose.debug.yml_, both the ***auth*** and ***character*** services, map host ports to container ports. In particular, besides the host/container port mapping for each Express server (ports 3000 and 3001) I've also defined one more mapping (ports 9228 and 9229).
+in the _docker-compose.debug.yml_, both the ***auth*** and ***character*** services, map host ports to container ports. In particular, besides the host/container port mapping for each Express server (ports 3002 and 3001) I've also defined one more mapping (ports 9228 and 9229).
 That last port mapping is mandatory in order to allow any debugger process to be attached to any service running in its container.
 When docker-compose finishes building any service container it runs what is written in the ***command*** property (i.e. _npm start_) meaning:
 
@@ -191,6 +193,13 @@ Since I've used [mongodb-in-memory server](https://www.npmjs.com/package/mongodb
 That means I had to specify in the .env file an environment variable with the _path to those binaries_ (i.e. MONGOMS_SYSTEM_BINARY) otherwise, running integration tests from within any service folder would have attempted to download the binaries once again and causing the tests to fail (due to Jest timeout exceeding).
 
 In the ***.vscode*** folder there are 2 useful configurations to execute jest tests in debug mode.
+
+### The init.sh script
+I created a bash script to ease and automatize the whole build process. The following command:
+```sh
+$ ./init.sh -d
+```
+will install all the dependencies and build and run the containers in development mode.
 
 ### The prod enviroment
 TODO
