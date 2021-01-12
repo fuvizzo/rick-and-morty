@@ -10,6 +10,8 @@ The project is fully dockerized. I used **4** containers where I spun up the fol
 - React app
 
 Both the auth and character service use the [***jsonwebtoken***](https://www.npmjs.com/package/jsonwebtoken) library to perform authentication/authorization operations.
+### The React app
+TODO
 
 ### The auth service
 It's responsible for User authentication. I wrote some basic functionalities here.
@@ -19,7 +21,7 @@ The APIs provided are:
 - sign-out
 - token (used to emit a brand new accessToken making use of a valid refrehToken)
 
-Both the sing-up and the sign-in methods are implemented to return a an ***{accessToken}*** as json response and a _HttpOnly_ cookie with the ***refreshToken***.
+Both the sing-up and the sign-in methods are implemented to return an ***{accessToken}*** as json response and a _HttpOnly_ cookie with the ***refreshToken***.
 
 The _accessToken_ and the _refreshToken_ differ only for an expiration time I set on the former one when that is generated (_expiresIn_ property). Apart from that they both share the same body structure, something like this:
 
