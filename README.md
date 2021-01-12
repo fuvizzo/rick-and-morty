@@ -11,7 +11,7 @@ The project is fully dockerized. I used **4** containers where I spun up the fol
 
 Both the auth and character service use the [***jsonwebtoken***](https://www.npmjs.com/package/jsonwebtoken) library to perform authentication/authorization operations.
 ### The React app
-TODO
+TODO: Description of the app
 
 ### The auth service
 It's responsible for User authentication. I wrote some basic functionalities here.
@@ -202,7 +202,7 @@ $ ./init.sh -d
 will install all the dependencies and build and run the containers in development mode.
 
 ### The prod enviroment
-TODO
+TODO: Description of prod enviroment
 
 # TO-DO
 - more test coverage
