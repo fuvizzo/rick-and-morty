@@ -187,7 +187,7 @@ $ npm run test
 $ npm run test:int 
 ```
 
-# Note:
+### Note:
 Since I've used [mongodb-in-memory server](https://www.npmjs.com/package/mongodb-memory-server) to write integration tests for both services and that library is listed among the devDependencies of the package.json in the main folder, the binaries are in the .cache folder of the node_modules directory of the main folder as well. 
 
 That means I had to specify in the .env file an environment variable with the _path to those binaries_ (i.e. MONGOMS_SYSTEM_BINARY) otherwise, running integration tests from within any service folder would have attempted to download the binaries once again and causing the tests to fail (due to Jest timeout exceeding).
