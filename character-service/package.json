@@ -6,7 +6,9 @@
   "scripts": {
     "tsc": "tsc --p tsconfig.prod.json",
     "tsc:dev": "tsc",
+    "tsc:dev-w": "tsc --w",
     "build:dev": "npm run tsc:dev",
+    "build:dev-w": "npm run tsc:dev-w",
     "build": "npm run tsc",
     "start": "nodemon --inspect=0.0.0.0:9229",
     "start:dev": "DEBUG=web-server nodemon",

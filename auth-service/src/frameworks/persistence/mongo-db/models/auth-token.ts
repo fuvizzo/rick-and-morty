@@ -15,7 +15,7 @@ const refreshTokenSchema: Schema = new Schema({
   value: { type: String, required: true },
 });
 
-const MongoRefreshToken: Model<IMongoDbRefreshTokenDocument> = model('RefreshToken', refreshTokenSchema);
+const MongoRefreshToken = model<IMongoDbRefreshTokenDocument>('RefreshToken', refreshTokenSchema);
 
 export type IMongoRefreshToken = typeof MongoRefreshToken;
 

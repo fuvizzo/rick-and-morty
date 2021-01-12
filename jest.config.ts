@@ -24,8 +24,8 @@ const config: Config.InitialOptions = {
     '<rootDir>/test-setup.js',
   ],
   setupFilesAfterEnv: [
-    '@testing-library/react/cleanup-after-each',
-    '@testing-library/jest-dom/extend-expect',
+    /*  '@testing-library/react/cleanup-after-each',
+    '@testing-library/jest-dom/extend-expect', */
   ],
   coveragePathIgnorePatterns: [
     '/node_modules/',

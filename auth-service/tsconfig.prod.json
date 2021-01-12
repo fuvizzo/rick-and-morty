@@ -1,8 +1,7 @@
 {
   "extends": "./tsconfig",
   "compilerOptions": {
-    "sourceMap": false,
-    "watch": false,
+    "sourceMap": false,  
     "typeRoots": [
       "./@types",       
     ], 
