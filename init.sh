@@ -7,18 +7,19 @@ txt1='...remember to start the compiler in watch mode for hot reloading!!! (comm
 set -e
 set -u
 set -o pipefail
-
  
 dev=0
- 
- 
 
-while getopts 'd' OPTION; do
+while getopts 'dc' OPTION; do
   case "$OPTION" in
     d) 
       dev=1
       echo "DEV mode"
-      ;;   
+      ;; 
+    c) 
+      dev=1
+      echo "DEV mode"
+      ;;    
     ?)
       echo "script usage: $(basename $0) [-d]" >&0
       exit 1
@@ -27,48 +28,59 @@ while getopts 'd' OPTION; do
 done
 shift "$(($OPTIND -1))"
 
+find . -type d -name ".docker" -prune \
+-o -type d \( -name "node_modules" -o -name "build" \) -prune -exec rm -rf '{}' + \
+-o -type f -name "package-lock.json" -exec rm -f {} \;
+
+if  [ $dev = 1 ]; then
+echo "Initializing the project in DEV mode..."
+else
+echo "Initializing the project..."
+fi 
+
 echo
-echo --> installing common dependencies...
+echo "--> installing common dependencies..."
 npm i
 
 echo
-echo --> installing react-app dependencies...
+echo "--> installing react-app dependencies..."
 npm --prefix ./react-app i
 echo
-echo --> installing auth-service dependencies (executing command: "npm i")...
+echo "--> installing auth-service dependencies..."
 npm --prefix ./auth-service i
 echo
-echo --> installing character-service dependencies...
-npm --prefix ./charater-service i
+echo "--> installing character-service dependencies..."
+npm --prefix ./character-service i
 echo 
 if  [ $dev = 1 ]; then
 
-  echo Initializing the project in DEV mode...
+  echo "Initializing the project in DEV mode..."
   echo
-  echo --> building auth-service (executing command: "npm $buildDevCmd")...
+  echo "--> building auth-service (executing command: 'npm $buildDevCmd')..."
   echo $txt1
   npm --prefix ./auth-service $buildDevCmd
   echo
  
-  echo --> building charater-service (executing command: "npm  $buildDevCmd")...
+  echo "--> building character-service (executing command: 'npm $buildDevCmd')..."
   echo $txt1
-  npm --prefix ./charater-service $buildDevCmd
+  npm --prefix ./character-service $buildDevCmd
   echo
-  echo --> starting docker in development mode (executing command: COMPOSE_DOCKER_CLI_BUILD=1 docker-compose -f docker-compose.debug.yml up)...
-
+  echo "--> starting docker in development mode (executing command: COMPOSE_DOCKER_CLI_BUILD=1 docker-compose -f docker-compose.debug.yml up)..."
+  COMPOSE_DOCKER_CLI_BUILD=1 docker-compose -f docker-compose.debug.yml up
 else
-  echo Initializing the project...
+  echo "Initializing the project..."
   echo
-  echo --> building auth-service (executing command: "npm $buildCmd")...
+  echo "--> building auth-service (executing command: 'npm $buildCmd')..."
   echo $txt1
   npm --prefix ./auth-service $buildCmd
   echo
  
-  echo --> building charater-service (executing command: "npm  $buildCmd")...
+  echo "--> building character-service (executing command: 'npm $buildCmd')..."
   echo $txt1
-  npm --prefix ./charater-service $buildCmd
+  npm --prefix ./character-service $buildCmd
   echo
-  echo --> starting docker (executing command: COMPOSE_DOCKER_CLI_BUILD=1 docker-compose up)...
+  echo "--> starting docker (executing command: COMPOSE_DOCKER_CLI_BUILD=1 docker-compose up)..."
+  COMPOSE_DOCKER_CLI_BUILD=1 docker-compose up
 fi
 
 

@@ -10,4 +10,5 @@
 .eslintcache 
 /**/.history
 /**/cypress/integration/examples
+/**/package-lock.json
  
