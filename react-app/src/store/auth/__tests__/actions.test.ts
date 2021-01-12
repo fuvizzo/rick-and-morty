@@ -11,7 +11,7 @@ import {
 
 import { RootState } from '../..';
 
-import mock from './mock-data';
+import mock from '../../../mocks/auth-data';
 import { AuthActionTypes, IUser } from '../types';
 
 const user : IUser = mock;

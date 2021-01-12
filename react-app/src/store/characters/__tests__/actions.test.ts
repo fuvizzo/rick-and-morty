@@ -4,19 +4,20 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import thunk, { ThunkDispatch } from 'redux-thunk';
 import * as CharacterActions from '../constants';
-import {
-  getCharacters,
-  toggleFavorite,
-} from '../thunk';
+import { getCharacters, toggleFavorite } from '../thunk';
 
 import { RootState } from '../..';
 
-import mock from './mock-data';
+import mock from '../../../mocks/character-list';
 import { CharacterListActionTypes, ICharacterList } from '../types';
 
 const mockedCharacterList: ICharacterList = mock;
 
-type DispatchExts = ThunkDispatch<RootState, undefined, CharacterListActionTypes>;
+type DispatchExts = ThunkDispatch<
+  RootState,
+  undefined,
+  CharacterListActionTypes
+>;
 
 const middlewares = [thunk];
 const mockStore = configureMockStore<RootState, DispatchExts>(middlewares);
@@ -53,7 +54,9 @@ describe('Character list actions', () => {
   });
 
   it('should create an action to toggle to favorite the character with ID = 1', () => {
-    mockAdapter.onPut(`${baseUrl}/favorites/foo`, { characterId: 1 }).reply(204);
+    mockAdapter
+      .onPut(`${baseUrl}/favorites/foo`, { characterId: 1 })
+      .reply(204);
 
     const expectedAction: CharacterListActionTypes = {
       type: CharacterActions.TOGGLE_FAVORITE,

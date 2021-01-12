@@ -28,7 +28,7 @@ const accountInfo: IAccount = {
   email: 'foo@foo.foo',
   password: 'password',
 };
-const buildRequestForTestUser = (
+const buildPostRequestForTestUser = (
   resource:string,
   data: Object,
 ) => request(app).post(`/${resource}`)
@@ -50,7 +50,7 @@ describe('Auth APIs - integration tests', () => {
 
   describe('"sign-up" endpoint', () => {
     it('succesfully returns a 201 response', async () => {
-      const res = <any> await buildRequestForTestUser('sign-up',
+      const res = <any> await buildPostRequestForTestUser('sign-up',
         {
           ...basicInfo,
           ...accountInfo,
@@ -58,16 +58,16 @@ describe('Auth APIs - integration tests', () => {
 
       expect(res.statusCode).toEqual(201);
       expect(res.body).toHaveProperty('accessToken');
-      expect(res.body).toHaveProperty('refreshToken');
+      expect(res.header['set-cookie'][0].includes('refresh-token')).toEqual(true);
     });
 
     it('returns a 400 response due some missing body params', async () => {
-      const res = <any> await buildRequestForTestUser('sign-up', { ...accountInfo });
+      const res = <any> await buildPostRequestForTestUser('sign-up', { ...accountInfo });
       expect(res.statusCode).toEqual(400);
     });
 
     it('returns a 400 response due some wrong body params', async () => {
-      const res = <any> await buildRequestForTestUser('sign-up', {
+      const res = <any> await buildPostRequestForTestUser('sign-up', {
         ...{
           firstName: '123',
           lastName: 'boo  foo',
@@ -78,7 +78,7 @@ describe('Auth APIs - integration tests', () => {
     });
 
     it('returns a 400 response due some wrong mail', async () => {
-      const res = <any> await buildRequestForTestUser('sign-up', {
+      const res = <any> await buildPostRequestForTestUser('sign-up', {
         ...{
           email: 'foo#foo.boo',
           password: 'password',
@@ -93,7 +93,7 @@ describe('Auth APIs - integration tests', () => {
         accountInfo,
         basicInfo,
       );
-      const res = <any> await buildRequestForTestUser('sign-up', {
+      const res = <any> await buildPostRequestForTestUser('sign-up', {
         ...accountInfo,
         ...basicInfo,
       });
@@ -102,6 +102,12 @@ describe('Auth APIs - integration tests', () => {
   });
 
   describe('"token" endpoint', () => {
+    const buildAccessTokenRequestForTestUser = (
+
+      token?: string,
+    ) => request(app).get('/token')
+      .set('Cookie', [token ? `refresh-token=${token}` : '']);
+
     it('succesfully returns a 200 response', async () => {
       const token = await authTokenRepository.refreshToken.create({
         userId: 'abc123',
@@ -109,22 +115,18 @@ describe('Auth APIs - integration tests', () => {
         roles: [RoleType.Customer],
         ...basicInfo,
       });
-      const res = <any> await buildRequestForTestUser('token', {
-        token,
-      });
+      const res = <any> await buildAccessTokenRequestForTestUser(token);
       expect(res.statusCode).toEqual(200);
-      expect(res.body).toHaveProperty('accessToken');
+      expect(res.header['set-cookie'][0].includes('refresh-token')).toEqual(true);
     });
 
     it('returns a 401 response', async () => {
-      const res = <any> await buildRequestForTestUser('token', {});
+      const res = <any> await buildAccessTokenRequestForTestUser();
       expect(res.statusCode).toEqual(401);
     });
 
     it('returns a 403 response', async () => {
-      const res = <any> await buildRequestForTestUser('token', {
-        token: 'foo',
-      });
+      const res = <any> await buildAccessTokenRequestForTestUser('foo');
       expect(res.statusCode).toEqual(403);
     });
   });
@@ -139,7 +141,7 @@ describe('Auth APIs - integration tests', () => {
       });
 
       const res = <any> await request(app).post('/sign-out')
-        .set('Authorization', `Bearer ${refreshToken}`);
+        .set('Cookie', [`refresh-token=${refreshToken}`]);
       expect(res.statusCode).toEqual(204);
     });
 
@@ -162,11 +164,11 @@ describe('Auth APIs - integration tests', () => {
         basicInfo,
       );
 
-      const res = <any> await buildRequestForTestUser('sign-in', { ...accountInfo });
+      const res = <any> await buildPostRequestForTestUser('sign-in', { ...accountInfo });
 
       expect(res.statusCode).toEqual(200);
       expect(res.body).toHaveProperty('accessToken');
-      expect(res.body).toHaveProperty('refreshToken');
+      expect(res.header['set-cookie'][0].includes('refresh-token')).toEqual(true);
     });
 
     it('returns a 401 response due some wrong body params', async () => {
@@ -175,7 +177,7 @@ describe('Auth APIs - integration tests', () => {
         basicInfo,
       );
 
-      const res = <any> await buildRequestForTestUser('sign-in', {
+      const res = <any> await buildPostRequestForTestUser('sign-in', {
         email: 'foo@foo.boo',
         password: 'password',
       });
@@ -184,7 +186,7 @@ describe('Auth APIs - integration tests', () => {
     });
 
     it('returns a 400 response due some wrong body params', async () => {
-      const res = <any> await buildRequestForTestUser('sign-in', {
+      const res = <any> await buildPostRequestForTestUser('sign-in', {
         email: 'foo#foo.boo',
         password: 'password',
       });
