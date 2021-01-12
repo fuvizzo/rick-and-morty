@@ -14,12 +14,12 @@ const connector = connect(
     characterList: state.characterList,
     ui: state.ui,
   }),
-  { localSignOut, getCharacterList, ...authActions },
+  { localSignOut, getCharacterList, ...authActions }
 );
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-const Dashboard: React.FC<PropsFromRedux> = (props) => {
+const Dashboard: React.FC<PropsFromRedux> = props => {
   const {
     ui,
     user: {
@@ -35,10 +35,18 @@ const Dashboard: React.FC<PropsFromRedux> = (props) => {
 
   const setIntervalRef = React.useRef<NodeJS.Timeout>();
   const [nextPageIndex, setNextPageIndex] = React.useState<number>(2);
+  const [viewPortHeight, setViewPortHeight] = React.useState<number>(
+    window.innerHeight
+  );
 
   const signOutHandler = (): void => {
     clearInterval(setIntervalRef.current!);
+    window.removeEventListener('resize', handleResize);
     signOut();
+  };
+
+  const handleResize = () => {
+    setViewPortHeight(window.innerHeight);
   };
 
   React.useEffect(() => {
@@ -51,17 +59,19 @@ const Dashboard: React.FC<PropsFromRedux> = (props) => {
         }, tokenExpiration! * 1000 - Date.now());
         getCharacterList();
       }
+      window.addEventListener('resize', handleResize);
     }
     return () => {
       clearInterval(setIntervalRef.current!);
+      window.removeEventListener('resize', handleResize);
     };
   }, [ui.error]);
 
   const onScrollHandler = (event: React.UIEvent<HTMLDivElement>): void => {
     const target: HTMLDivElement = event.target as HTMLDivElement;
     if (
-      characterList.info.pages > nextPageIndex
-      && target.scrollHeight - target.scrollTop === target.clientHeight
+      characterList.info.pages > nextPageIndex &&
+      target.scrollHeight - target.scrollTop === target.clientHeight
     ) {
       getCharacterList(nextPageIndex);
       setNextPageIndex(nextPageIndex + 1);
@@ -69,7 +79,10 @@ const Dashboard: React.FC<PropsFromRedux> = (props) => {
   };
 
   return (
-    <DashboardContainer onScroll={onScrollHandler}>
+    <DashboardContainer
+      height={`${viewPortHeight}px`}
+      onScroll={onScrollHandler}
+    >
       <MainHeaderWrapper>
         <MainHeader>
           Welcome... {userInfo!.firstName} {userInfo!.lastName}!

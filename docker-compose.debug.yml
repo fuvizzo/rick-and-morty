@@ -14,8 +14,7 @@ services:
       REACT_APP_CHARACTER_SERVICE_URL: http://character-service:${CHARACTER_SERVICE_LISTENING_PORT}
       DEBUG: ${DEBUG} 
     ports:
-      - 3000:${REACT_APP_LISTENING_PORT}
-      - 9227:9227
+      - 3000:${REACT_APP_LISTENING_PORT}       
     volumes:       
       - ./react-app:/usr/src/node_app/react-app:delegated 
       - ./react-app/package.json:/usr/src/node_app/package.json
@@ -23,6 +22,7 @@ services:
       - notused:/usr/src/node_app/react-app/node_modules
     depends_on:
       - auth-service
+      - character-service
     command: ["npm", "start"]
   character-service:
     image: character-service
