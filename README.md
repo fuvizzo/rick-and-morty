@@ -209,7 +209,7 @@ $ ./init.sh -d
 will install all the dependencies and build and run the containers in development mode.
 
 ### The prod enviroment
-TODO: Description of prod enviroment (the production configuration and setup is still to be completed by the way...)
+TODO: Description of prod enviroment (configuration and setup is still to be completed by the way...)
 
 # TO-DO
 - adding E2E test coverage on the React app by using Cypress 
