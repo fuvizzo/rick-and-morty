@@ -89,7 +89,7 @@ You have to create a **.env** file in the main directory of the project and spec
 - REFRESH_TOKEN_SECRET = <*secret string to encrypt refresh tokens*>
 - ENCRYPTION_SALT_ROUNDS = 10
 - ACCESS_TOKEN_EXPIRATION_TIME=20m
-- AUTH_COOKIE_MAX_AGE=1200000 ATTENTION:Cookie parser use milliseconds!!!
+- AUTH_COOKIE_MAX_AGE=1200000                   **ATTENTION: Cookie parser lib uses milliseconds!!!**
 ##### MongoDB
 - MONGO_URL = <*mongo db coonnection string*>
 - MONGO_INITDB_ROOT_USERNAME = <*root username*>
@@ -98,7 +98,7 @@ You have to create a **.env** file in the main directory of the project and spec
 - MONGO_INITDB_USERNAME = <*username*>
 - MONGO_INITDB_PASSWORD = <*password*>
 - MONGO_REPLICA_SET_NAME = rs0
-##### Test specific env variables (Mongodb in-memory server)
+##### Test specific env variables [(Mongodb in-memory server)](#Note)
 - MONGOMS_DISABLE_POSTINSTALL=1
 - MONGOMS_SYSTEM_BINARY = ../node_modules/.cache/mongodb-memory-server/mongodb-binaries/<*mongodb binaries version number*>/mongod  
  
@@ -185,7 +185,7 @@ $ npm run test
 $ npm run test:int 
 ```
 
-Note:
+#Note:
 Since I've used [mongodb-in-memory server](https://www.npmjs.com/package/mongodb-memory-server) to write integration tests for both services and that library is listed among the devDependencies of the package.json in the main folder, the binaries are in the .cache folder of the node_modules directory of the main folder as well. 
 
 That means I had to specify in the .env file an environment variable with the _path to those binaries_ (i.e. MONGOMS_SYSTEM_BINARY) otherwise, running integration tests from within any service folder would have attempted to download the binaries once again and causing the tests to fail (due to Jest timeout exceeding).
