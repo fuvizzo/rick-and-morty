@@ -212,6 +212,7 @@ will install all the dependencies and build and run the containers in developmen
 TODO: Description of prod enviroment (configuration and setup is still to be completed by the way...)
 
 # TO-DO
-- adding E2E test coverage on the React app by using Cypress 
+- adding E2E test coverage on the React app by using Cypress
+- optimizing React component rendering by using memoization
 - set up tests to run in Docker containers at build time for CI
 - provide swagger (OpenAPI) endpoint definitions
