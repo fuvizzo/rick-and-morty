@@ -1,6 +1,6 @@
 # Rick and Morty
 
-If you are to lazy to read all the stuff I wrote next go directly [here](#the-initsh-script)
+If you are to lazy to read all the stuff I wrote next go directly [here](#the-initsh-script)😉
 
 ## Project structure
 The project is fully dockerized. I used **4** containers where I spun up the following services:
@@ -91,7 +91,7 @@ You have to create a **.env** file in the main directory of the project and spec
 - REFRESH_TOKEN_SECRET = <*secret string to encrypt refresh tokens*>
 - ENCRYPTION_SALT_ROUNDS = 10
 - ACCESS_TOKEN_EXPIRATION_TIME=20m
-- AUTH_COOKIE_MAX_AGE=1200000                   **ATTENTION: Cookie parser lib uses milliseconds!!!**
+- AUTH_COOKIE_MAX_AGE=1200000                  ----> **ATTENTION: Cookie parser lib uses milliseconds!!!**
 ##### MongoDB
 - MONGO_URL = <*mongo db coonnection string*>
 - MONGO_INITDB_ROOT_USERNAME = <*root username*>
@@ -117,7 +117,7 @@ In each Dockerfile 2 distinct set of commands to be executed, for  ***dev*** and
 In each docker-compose config file,   ***dev*** and ***prod*** are referred as the value of the _target_ property of the _build_ section in the container definition of each service.
 
 ### The dev enviroment
-In the _docker-compose.debug.yml_, for both _**auth**_ and _**character**_ service, I created volumes (_local bind-mounts_) to link the folder I developed the source code in to the corresponding container I was running (and debugging) the service in. 
+In the _docker-compose.debug.yml_, for the _**auth**_ service, the _**character**_ service and the ***react*** app, I created volumes (_local bind-mounts_) to link the folder I developed the source code in to the corresponding container I was running (and debugging) the service in. 
 Since the environemnt I host and develop my projects in is **Windows 10** and I use _wsl2_ to run docker in it natively, I had to deal with the  ***node_modules hassle*** (the nice way I like to address the problem). 
 It was the **bcrypt** library that rang the bell when I realized that I could never make the same library that was working fine on Windows working on Linux as well (and the other way around). 
 - "The core of this issue for Node.js is that node_modules can contain binaries compiled for your host OS, and if it's different than the container OS, you'll get errors trying to run your app when you're bind-mounting it from the host for development"
