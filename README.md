@@ -192,7 +192,7 @@ $ npm run test
 ```
 
 ###IMPORTANT!
-All he tests on the the auth service, the character service and the react app where carryed out outside the docker containers. If you try to run any from any docker container it will fail
+All the tests on the auth service, the character service and the react app where carryed out outside the docker containers. If you try to run any from any docker container it will fail
 
 ### Note:
 Since I've used [mongodb-in-memory server](https://www.npmjs.com/package/mongodb-memory-server) to write integration tests for both services and that library is listed among the devDependencies of the package.json in the main folder, the binaries are in the .cache folder of the node_modules directory of the main folder as well. 
