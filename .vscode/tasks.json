@@ -1,0 +1,52 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+			"label": "typescript",
+			"type": "typescript",
+			"tsconfig": "auth-service/tsconfig.json",
+			"problemMatcher": [
+				"$tsc-watch"
+			],
+			"option": "watch"
+		},
+    {
+      "type": "docker-build",
+      "label": "docker-build",
+      "platform": "node",
+      "dockerBuild": {
+        "dockerfile": "${workspaceFolder}/app/Dockerfile",
+        "context": "${workspaceFolder}/app",
+        "pull": true
+      },
+      "node": {
+        "package": "${workspaceFolder}/app/package.json"
+      }
+    },
+    {
+      "type": "docker-run",
+      "label": "docker-run: release",
+      "dependsOn": ["docker-build"],
+      "platform": "node",
+      "node": {
+        "package": "${workspaceFolder}/app/package.json"
+      }
+    },
+    {
+      "type": "docker-run",
+      "label": "docker-run: debug",
+      "dependsOn": ["docker-build"],
+      "dockerRun": {
+        "env": {
+          "DEBUG": "*",
+          "NODE_ENV": "development",
+          "MONGO_URL": "mongodb://user:password@mongodb:27017/test-db?authSource=test-db"
+        }
+      },
+      "node": {
+        "package": "${workspaceFolder}/app/package.json",
+        "enableDebugging": true
+      }
+    }
+  ]
+}

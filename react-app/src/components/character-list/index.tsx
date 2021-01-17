@@ -36,13 +36,9 @@ interface Props extends PropsFromRedux {
   data: ICharacterList;
 }
 
-const UserListComponent: React.FC<Props> = (props) => {
-  const [nextPageIndex, setNextPageIndex] = React.useState<number>(2);
+const ListComponent: React.FC<Props> = (props) => {
   const {
     data: { results },
-    query,
-    getFilteredCharacters,
-    triggerCharacterSearch,
     toggleFavorite,
   } = props;
 
@@ -94,4 +90,4 @@ const UserListComponent: React.FC<Props> = (props) => {
   );
 };
 
-export default connector(UserListComponent);
+export default connector(ListComponent);

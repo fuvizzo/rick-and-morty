@@ -1,5 +1,5 @@
 /.history
-.vscode
+#.vscode
 .env*
 /.docker/mongodb/data/
 /**/node_modules/
